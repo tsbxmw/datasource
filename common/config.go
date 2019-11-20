@@ -2,7 +2,6 @@ package common
 
 import (
     "fmt"
-    "github.com/gin-gonic/gin"
     "github.com/jinzhu/gorm"
     "github.com/spf13/viper"
     "time"
@@ -18,7 +17,7 @@ type ServiceConfig struct {
     Port        int
 }
 
-func configFromFileName(config string) (serviceConfig ServiceConfig, err error) {
+func ConfigFromFileName(config string) (serviceConfig ServiceConfig, err error) {
     viper.SetConfigFile(config)
     if err = viper.ReadInConfig(); err != nil {
         return
@@ -34,15 +33,6 @@ func configFromFileName(config string) (serviceConfig ServiceConfig, err error) 
         Port:        viper.GetInt("port"),
     }
     return
-}
-
-func (serviceConfig ServiceConfig) GetLogger() (logger gin.HandlerFunc, err error) {
-    logger, err = Logger(serviceConfig.LogFile)
-    if err != nil {
-        return
-    }
-    return
-
 }
 
 func (serviceConfig ServiceConfig) GetDB() (db *gorm.DB, err error) {
