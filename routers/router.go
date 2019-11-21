@@ -8,6 +8,6 @@ import (
 func InitRouter(r *gin.Engine) {
     GroupV1 := r.Group("/v1")
     {
-        GroupV1.Any("/test", v1.Test)
+        GroupV1.GET("/test", v1.GetTest)
     }
 }

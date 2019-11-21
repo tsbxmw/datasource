@@ -3,6 +3,7 @@ package main
 import (
     "datasource/public"
     "fmt"
+    "github.com/sirupsen/logrus"
     "os"
 )
 
@@ -12,5 +13,8 @@ func main() {
         panic(err)
     }
     fmt.Println("start main")
-    app.Run(os.Args)
+    if err:=app.Run(os.Args); err!=nil{
+        logrus.Error(err)
+        panic(err)
+    }
 }

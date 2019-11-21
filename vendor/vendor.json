@@ -9,6 +9,20 @@
 			"revisionTime": "2019-10-07T09:55:39Z"
 		},
 		{
+			"checksumSHA1": "2UmMbNHc8FBr98mJFN1k8ISOIHk=",
+			"origin": "tcloud/vendor/github.com/garyburd/redigo/internal",
+			"path": "github.com/garyburd/redigo/internal",
+			"revision": "8c7176d5dff1beef22442629e0e9648290c64997",
+			"revisionTime": "2019-11-01T08:52:13Z"
+		},
+		{
+			"checksumSHA1": "DsobywS3zeHUgxjSOCUt4SLS2ik=",
+			"origin": "tcloud/vendor/github.com/garyburd/redigo/redis",
+			"path": "github.com/garyburd/redigo/redis",
+			"revision": "8c7176d5dff1beef22442629e0e9648290c64997",
+			"revisionTime": "2019-11-01T08:52:13Z"
+		},
+		{
 			"checksumSHA1": "qlEzrgKgIkh7y0ePm9BNo1cNdXo=",
 			"path": "github.com/gin-contrib/sse",
 			"revision": "43f0f29dbd2b3f0feeebff91fd9cda22db296938",
@@ -64,6 +78,23 @@
 			"revisionTime": "2019-10-22T19:55:53Z"
 		},
 		{
+			"checksumSHA1": "bmg4kBp5Lyw7itBV3S8ElfkjmYY=",
+			"path": "github.com/hashicorp/consul/api",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "b8F628srIitj5p7Y130xc9k0QWs=",
+			"origin": "github.com/hashicorp/consul/vendor/github.com/hashicorp/go-cleanhttp",
+			"path": "github.com/hashicorp/go-cleanhttp",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "A1PcINvF3UiwHRKn8UcgARgvGRs=",
+			"origin": "github.com/hashicorp/consul/vendor/github.com/hashicorp/go-rootcerts",
+			"path": "github.com/hashicorp/go-rootcerts",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "HtpYAWHvd9mq+mHkpo7z8PGzMik=",
 			"path": "github.com/hashicorp/hcl",
 			"revision": ""
@@ -114,6 +145,12 @@
 			"revision": ""
 		},
 		{
+			"checksumSHA1": "mS15CkImPzXYsgNwl3Mt9Gh3Vb0=",
+			"origin": "github.com/hashicorp/consul/vendor/github.com/hashicorp/serf/coordinate",
+			"path": "github.com/hashicorp/serf/coordinate",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "tM7T53nadX4YqpWXYtZV85hGnGI=",
 			"path": "github.com/jinzhu/gorm",
 			"revision": "59408390c2dce9ca8b48fae08937213e72b24f9a",
@@ -156,10 +193,28 @@
 			"revisionTime": "2019-11-12T05:12:48Z"
 		},
 		{
+			"checksumSHA1": "V/quM7+em2ByJbWBLOsEwnY3j/Q=",
+			"origin": "github.com/hashicorp/consul/vendor/github.com/mitchellh/go-homedir",
+			"path": "github.com/mitchellh/go-homedir",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "J+g0oZePWp2zSIISD2dZZKTxmgg=",
 			"path": "github.com/mitchellh/mapstructure",
 			"revision": "3536a929edddb9a5b34bd6861dc4a9647cb459fe",
 			"revisionTime": "2018-10-05T04:51:35Z"
+		},
+		{
+			"checksumSHA1": "Mlhn2RPXfefs+c6mWBV0Y8yOQAg=",
+			"path": "github.com/opentracing/opentracing-go",
+			"revision": "a7454ce5950e83caac9774ef32cc8979e5975f30",
+			"revisionTime": "2019-09-13T14:24:02Z"
+		},
+		{
+			"checksumSHA1": "Nmrr1xgBkkrpUbyasdge+CngZV8=",
+			"path": "github.com/opentracing/opentracing-go/log",
+			"revision": "a7454ce5950e83caac9774ef32cc8979e5975f30",
+			"revisionTime": "2019-09-13T14:24:02Z"
 		},
 		{
 			"checksumSHA1": "bS6hkg5Ofhi4faZ3BnR0XLEeYBk=",
@@ -234,6 +289,13 @@
 			"revisionTime": "2019-11-19T08:04:40Z"
 		},
 		{
+			"checksumSHA1": "dr5+PfIRzXeN+l1VG+s0lea9qz8=",
+			"origin": "tcloud/vendor/golang.org/x/net/context",
+			"path": "golang.org/x/net/context",
+			"revision": "8c7176d5dff1beef22442629e0e9648290c64997",
+			"revisionTime": "2019-11-01T08:52:13Z"
+		},
+		{
 			"checksumSHA1": "Uj7iqZD2MYRjG126dPdMJaCyJL0=",
 			"path": "golang.org/x/sys/unix",
 			"revision": "e882bf8e40c23f260d489ef820e5e8eead5e76e3",
@@ -252,6 +314,18 @@
 			"revisionTime": "2019-08-29T15:11:34Z"
 		},
 		{
+			"checksumSHA1": "0i0LEVbxtQpqttTqgyiytp4oSVM=",
+			"path": "google.golang.org/grpc/resolver",
+			"revision": "ee90cbdad79b6bb99bd1c7c8dad7df7233a1e34e",
+			"revisionTime": "2019-10-29T20:24:38Z"
+		},
+		{
+			"checksumSHA1": "S7duOGyPoeGhK3EOhKNyxa/KHtk=",
+			"path": "google.golang.org/grpc/serviceconfig",
+			"revision": "ee90cbdad79b6bb99bd1c7c8dad7df7233a1e34e",
+			"revisionTime": "2019-10-29T20:24:38Z"
+		},
+		{
 			"checksumSHA1": "atyV7tlPxjoWl/cpsgxkkvaHHAs=",
 			"path": "gopkg.in/go-playground/validator.v9",
 			"revision": "691a5f5f25701d0a22785c982db4f22bfac47931",
@@ -262,6 +336,12 @@
 			"path": "gopkg.in/yaml.v2",
 			"revision": "f90ceb4f409096b60e2e9076b38b304b8246e5fa",
 			"revisionTime": "2019-11-04T18:03:43Z"
+		},
+		{
+			"checksumSHA1": "ynAXZRoVRY+Is1T7Q4t7TAubZzg=",
+			"path": "tcloud/tcloud_utils",
+			"revision": "8c7176d5dff1beef22442629e0e9648290c64997",
+			"revisionTime": "2019-11-01T08:52:13Z"
 		}
 	],
 	"rootPath": "datasource"

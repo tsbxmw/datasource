@@ -5,7 +5,6 @@ import (
     "datasource/routers"
     "github.com/gin-gonic/gin"
     "github.com/jinzhu/gorm"
-    "github.com/sirupsen/logrus"
 )
 
 type (
@@ -25,16 +24,28 @@ type (
     }
 )
 
-func (h HttpServer) Serve() {
-    logrus.Info("test")
+func (httpServer HttpServer) Serve() {
     engin := gin.New()
+    // init logger
     middleware.LoggerInit(engin, "/Users/mengwei/workspace/mine/go_data/src/datasource/log/datasource.log")
-
+    // init router
     routers.InitRouter(engin)
-    engin.Run()
+    // init consul
+    //consulRegister := consul.ConsulRegister{
+    //    Address:                        httpServer.Address,
+    //    Port:                           httpServer.Port,
+    //    ConsulAddress:                  httpServer.ConsulAddr,
+    //    ConsulPort:                     80,
+    //    Service:                        httpServer.SvcName,
+    //    Tag:                            []string{httpServer.SvcName},
+    //    DeregisterCriticalServiceAfter: time.Second * 10,
+    //    Interval:                       time.Second * 5,
+    //}
+    //
+    //consulRegister.Register()
+
+    if err:=engin.Run();err!=nil{
+        panic(err)
+    }
 }
 
-func getting(context *gin.Context) {
-    context.Writer.Write([]byte("test"))
-
-}
