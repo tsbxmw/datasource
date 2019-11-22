@@ -27,6 +27,7 @@ func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
     logClient := logrus.New()
 
     if _, err = os.Stat(file); err != nil {
+        logrus.Info(err)
         if _, err = os.Create(file); err != nil {
             panic(err)
         }
@@ -43,7 +44,7 @@ func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
 
     logWriter, err := rotatelogs.New(
         apiLogPath+".%Y-%m-%d-%H-%M.log",
-        rotatelogs.WithLinkName(apiLogPath),
+        rotatelogs.WithLinkName(apiLogPath+"-temp"),
         rotatelogs.WithMaxAge(7*24*time.Hour),
         rotatelogs.WithRotationTime(24*time.Hour),
     )
@@ -101,7 +102,7 @@ func loggerErrorMiddleware(file string) (logger gin.HandlerFunc, err error) {
 
     logErrorWriter, err := rotatelogs.New(
         apiErrorLogPath+".%Y-%m-%d-%H-%M.error.log",
-        rotatelogs.WithLinkName(apiErrorLogPath),
+        rotatelogs.WithLinkName(apiErrorLogPath+"-temp"),
         rotatelogs.WithMaxAge(7*24*time.Hour),
         rotatelogs.WithRotationTime(24*time.Hour),
     )

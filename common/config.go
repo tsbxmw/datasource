@@ -12,6 +12,7 @@ type ServiceConfig struct {
     LogFile     string
     JaegerAddr  string
     ConsulAddr  string
+    ConsulPort  int
     HttpAddr    string
     DbUri       string
     Port        int
@@ -28,6 +29,7 @@ func ConfigFromFileName(config string) (serviceConfig ServiceConfig, err error) 
         LogFile:     viper.GetString("log_file"),
         JaegerAddr:  viper.GetString("jaeger_addr"),
         ConsulAddr:  viper.GetString("consul_addr"),
+        ConsulPort:  viper.GetInt("consul_port"),
         HttpAddr:    viper.GetString("address"),
         DbUri:       viper.GetString("db_uri"),
         Port:        viper.GetInt("port"),

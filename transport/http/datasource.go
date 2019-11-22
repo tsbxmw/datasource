@@ -1,54 +1,58 @@
 package http
 
 import (
+    "datasource/common"
+    "datasource/common/consul"
     "datasource/middleware"
     "datasource/models"
     "datasource/routers"
+    "fmt"
     "github.com/gin-gonic/gin"
-    "github.com/jinzhu/gorm"
+    "strconv"
+    "time"
 )
 
 type (
     HttpServer struct {
-        DB            *gorm.DB
-        SvcName       string
-        Address       string
-        Port          int
-        GrpcPort      string
-        DbUri         string
-        ConsulAddr    string
-        JaegerAddr    string
-        RedisHost     string
-        RedisPort     string
-        RedisPassword string
-        RedisDB       int
+        common.HttpServerImpl
     }
 )
 
 func (httpServer HttpServer) Serve() {
+    fmt.Println("test on httpserver", httpServer.SvcName)
     engin := gin.New()
     // init logger
-    middleware.LoggerInit(engin, "/Users/mengwei/workspace/mine/go_data/src/datasource/log/datasource.log")
+    middleware.LoggerInit(engin, "./log/datasource.log")
     // init router
     routers.InitRouter(engin)
     // init consul
-    //consulRegister := consul.ConsulRegister{
-    //    Address:                        httpServer.Address,
-    //    Port:                           httpServer.Port,
-    //    ConsulAddress:                  httpServer.ConsulAddr,
-    //    ConsulPort:                     80,
-    //    Service:                        httpServer.SvcName,
-    //    Tag:                            []string{httpServer.SvcName},
-    //    DeregisterCriticalServiceAfter: time.Second * 10,
-    //    Interval:                       time.Second * 5,
-    //}
-    //
-    //consulRegister.Register()
+    consulRegister := consul.ConsulRegister{
+        Address:                        httpServer.Address,
+        Port:                           httpServer.Port,
+        ConsulAddress:                  httpServer.ConsulAddr,
+        ConsulPort:                     httpServer.ConsulPort,
+        Service:                        httpServer.SvcName,
+        Tag:                            []string{httpServer.SvcName},
+        DeregisterCriticalServiceAfter: time.Second * 10,
+        Interval:                       time.Second * 5,
+    }
+
+    consulRegister.RegisterHTTP()
 
     models.InitDB(httpServer.DbUri)
 
-    if err:=engin.Run();err!=nil{
+    if err := engin.Run(httpServer.Address + ":" + strconv.Itoa(httpServer.Port)); err != nil {
         panic(err)
     }
 }
 
+func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServer){
+    httpServer.SvcName = config.ServiceName
+    httpServer.Address = config.HttpAddr
+    httpServer.Port = config.Port
+    httpServer.DbUri = config.DbUri
+    httpServer.ConsulAddr = config.ConsulAddr
+    httpServer.JaegerAddr = config.JaegerAddr
+    httpServer.ConsulPort = config.ConsulPort
+    return httpServer
+}

@@ -1,6 +1,7 @@
 {
   "address": "172.22.96.83",
-  "consul_addr": "http://consul.tsbx.com",
+  "consul_addr": "http://172.23.152.46",
+  "consul_port": 8500,
   "db_uri": "root:mengwei@(tcloud-api.tsbx.com:3306)/tcloud?parseTime=true&loc=Local",
   "jaeger_addr": "tcloud-api.tsbx.com:5775",
   "log_file": "log/auth.log",
@@ -8,9 +9,9 @@
   "grpc_port": 9031,
   "retry_max": 3,
   "retry_timeout": 500,
-  "service_name": "tcloud_message_v1",
+  "service_name": "datasource_v1",
   "redis_host": "tcloud-api.tsbx.com",
-  "redis_password": "tcloud",
+  "redis_password": "",
   "redis_port": "6379",
   "redis_db": 1
 }

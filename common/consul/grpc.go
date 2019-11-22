@@ -44,5 +44,4 @@ func (r *ConsulRegister) Register() error {
 
 
 func InitConsul() {
-    Rpc
 }
