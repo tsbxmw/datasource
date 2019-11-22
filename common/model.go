@@ -1,8 +1,8 @@
 package common
 
 import (
-    "time"
     _ "github.com/jinzhu/gorm"
+    "time"
 )
 
 type BaseModel struct {

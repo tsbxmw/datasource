@@ -2,6 +2,7 @@ package http
 
 import (
     "datasource/middleware"
+    "datasource/models"
     "datasource/routers"
     "github.com/gin-gonic/gin"
     "github.com/jinzhu/gorm"
@@ -29,7 +30,7 @@ func (httpServer HttpServer) Serve() {
     // init logger
     middleware.LoggerInit(engin, "/Users/mengwei/workspace/mine/go_data/src/datasource/log/datasource.log")
     // init router
-    routers.InitRouter(engin, httpServer)
+    routers.InitRouter(engin)
     // init consul
     //consulRegister := consul.ConsulRegister{
     //    Address:                        httpServer.Address,
@@ -44,7 +45,7 @@ func (httpServer HttpServer) Serve() {
     //
     //consulRegister.Register()
 
-
+    models.InitDB(httpServer.DbUri)
 
     if err:=engin.Run();err!=nil{
         panic(err)
