@@ -5,7 +5,7 @@ import (
     "github.com/sirupsen/logrus"
 )
 
-func GetTest(c *gin.Context) {
+func AuthCheck(c *gin.Context) {
     name := c.Query("name")
     logrus.Error("test here")
     c.JSON(200, gin.H{

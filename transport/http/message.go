@@ -29,7 +29,7 @@ func (httpServer HttpServer) Serve() {
     // init logger
     middleware.LoggerInit(engin, "/Users/mengwei/workspace/mine/go_data/src/datasource/log/datasource.log")
     // init router
-    routers.InitRouter(engin)
+    routers.InitRouter(engin, httpServer)
     // init consul
     //consulRegister := consul.ConsulRegister{
     //    Address:                        httpServer.Address,
@@ -43,6 +43,8 @@ func (httpServer HttpServer) Serve() {
     //}
     //
     //consulRegister.Register()
+
+
 
     if err:=engin.Run();err!=nil{
         panic(err)

@@ -8,6 +8,7 @@ import (
 
 type (
     DataSourceMgr interface {
+        AuthCheck(key, secret string) bool
     }
 
     DataSourceService struct {
@@ -31,3 +32,6 @@ func NewDataSourceMgr(dbUri string) (DataSourceMgr, error) {
 }
 
 
+func (ds *DataSourceService) AuthCheck(key, secret string) bool {
+    return true
+}
