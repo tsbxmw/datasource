@@ -3,6 +3,7 @@ package service
 import (
 	"datasource/common"
 	"github.com/google/uuid"
+	"strconv"
 	"time"
 )
 
@@ -33,6 +34,9 @@ func (as *AuthService) TokenGenerate(userId int) (key, secret string, err error)
 		key = authModel.AppKey
 		secret = authModel.AppSecret
 	}
+	redisConn := common.RedisPool.Get()
+	defer redisConn.Close()
+	_, err = common.RedisSet(redisConn, strconv.Itoa(userId), "{ \"" + key + "\":\"" + secret + "\"}")
 	return
 }
 
@@ -51,5 +55,8 @@ func (as *AuthService) RefreshToken(userId int) (key, secret string, err error) 
 	if err = common.DB.Table(authModel.TableName()).Update(&authModel).Error; err != nil {
 		return
 	}
+	redisConn := common.RedisPool.Get()
+	defer redisConn.Close()
+	_, err = common.RedisSet(redisConn, key, secret)
 	return
 }

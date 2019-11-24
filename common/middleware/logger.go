@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"datasource/common"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	rotatelogs "github.com/lestrrat/go-file-rotatelogs"
@@ -11,6 +12,7 @@ import (
 )
 
 func LoggerInit(e *gin.Engine, file string) {
+	common.InitLogger()
 	logger, err := loggerMiddleware(file)
 	if err != nil {
 		panic(err)
@@ -21,10 +23,16 @@ func LoggerInit(e *gin.Engine, file string) {
 		panic(err)
 	}
 	e.Use(loggerError)
+	// here using gin.Recovery as Exception Capture
+	//loggerRecovery, err := loggerRecoveryMiddleware(file)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//e.Use(loggerRecovery)
 }
 
 func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
-	logClient := logrus.New()
+	logClient := common.LogrusLogger
 
 	if _, err = os.Stat(file); err != nil {
 		logrus.Info(err)
@@ -52,8 +60,6 @@ func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
 	writeMap := lfshook.WriterMap{
 		logrus.InfoLevel:  logWriter,
 		logrus.WarnLevel:  logWriter,
-		logrus.ErrorLevel: logWriter,
-		logrus.FatalLevel: logWriter,
 	}
 
 	lfHook := lfshook.NewHook(writeMap, &logrus.JSONFormatter{})
@@ -69,6 +75,8 @@ func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
 		latency := end.Sub(start)
 
 		path := c.Request.URL.Path
+		params := c.Request.Header
+		req_body := c.Request.Body
 		clientIP := c.ClientIP()
 		method := c.Request.Method
 		statusCode := c.Writer.Status()
@@ -78,12 +86,14 @@ func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
 			"client_ip":    clientIP,
 			"method":       method,
 			"path":         path,
+			"params":       params,
+			"req_body":     req_body,
 		}).Info()
 	}, err
 }
 
 func loggerErrorMiddleware(file string) (logger gin.HandlerFunc, err error) {
-	logClient := logrus.New()
+	logClient := common.LogrusLogger
 
 	if _, err = os.Stat(file); err != nil {
 		if _, err = os.Create(file); err != nil {
@@ -116,22 +126,62 @@ func loggerErrorMiddleware(file string) (logger gin.HandlerFunc, err error) {
 	errorHook := lfshook.NewHook(writeErrorMap, &logrus.JSONFormatter{})
 	logClient.AddHook(errorHook)
 
+	gin.RecoveryWithWriter(logErrorWriter)
+
 	return func(c *gin.Context) {
+		if c.Writer.Status() == 200{
+			c.Next()
+			return
+		}
 		start := time.Now()
 		c.Next()
 		end := time.Now()
 		latency := end.Sub(start)
 
 		path := c.Request.URL.Path
+		params := c.Request.Header
+		req_body := c.Request.Body
 		clientIP := c.ClientIP()
 		method := c.Request.Method
 		statusCode := c.Writer.Status()
+		errorsInfo := c.Errors
 		logClient.WithFields(logrus.Fields{
 			"status_coude": statusCode,
 			"latency":      latency,
 			"client_ip":    clientIP,
 			"method":       method,
 			"path":         path,
+			"params":       params,
+			"req_body":     req_body,
+			"error":        errorsInfo,
 		}).Error()
 	}, err
+}
+
+func loggerRecoveryMiddleware(file string) (logger gin.HandlerFunc, err error) {
+	logClient := logrus.New()
+
+	if _, err = os.Stat(file); err != nil {
+		if _, err = os.Create(file); err != nil {
+			panic(err)
+		}
+	}
+	src, err := os.OpenFile(file, os.O_APPEND|os.O_RDWR, os.ModeAppend)
+	if err != nil {
+		fmt.Println("err:", err)
+		return
+	}
+
+	logClient.Out = src
+	logClient.SetLevel(logrus.DebugLevel)
+	apiRecoveryLogPath := file + "-recovery"
+
+	logRecoveryWriter, err := rotatelogs.New(
+		apiRecoveryLogPath+".%Y-%m-%d-%H-%M.log",
+		rotatelogs.WithLinkName(apiRecoveryLogPath+"-temp"),
+		rotatelogs.WithMaxAge(7*24*time.Hour),
+		rotatelogs.WithRotationTime(24*time.Hour),
+	)
+
+	return gin.RecoveryWithWriter(logRecoveryWriter), nil
 }

@@ -21,10 +21,9 @@ func (httpServer HttpServer) Serve() {
     fmt.Println("test on httpserver", httpServer.SvcName)
     engin := gin.New()
     common.InitDB(httpServer.DbUri)
+    common.InitRedisPool("tcp", httpServer.RedisHost+":"+httpServer.RedisPort, httpServer.RedisPassword, httpServer.RedisDB)
     // init logger
     middleware.LoggerInit(engin, "./log/datasource.log")
-    // init auth
-    middleware.AuthInit(engin)
     // init exception
     middleware.ExceptionInit(engin)
     // init router
@@ -56,5 +55,9 @@ func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServ
     httpServer.ConsulAddr = config.ConsulAddr
     httpServer.JaegerAddr = config.JaegerAddr
     httpServer.ConsulPort = config.ConsulPort
+    httpServer.RedisDB = config.RedisDB
+    httpServer.RedisHost = config.RedisHost
+    httpServer.RedisPassword = config.RedisPassword
+    httpServer.RedisPort = config.RedisPort
     return httpServer
 }

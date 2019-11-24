@@ -19,9 +19,14 @@ type (
 
 func (httpServer HttpServer) Serve() {
 	fmt.Println("test on httpserver", httpServer.SvcName)
+	gin.SetMode(gin.ReleaseMode)
 	engin := gin.New()
 	// init logger
 	middleware.LoggerInit(engin, "./log/auth.log")
+	// init redis
+	common.InitRedisPool("tcp", httpServer.RedisHost+":"+string(httpServer.RedisPort), httpServer.RedisPassword, httpServer.RedisDB)
+	// init exception
+	middleware.ExceptionInit(engin)
 	// init router
 	routers.InitRouter(engin)
 	// init consul
@@ -53,5 +58,9 @@ func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServ
 	httpServer.ConsulAddr = config.ConsulAddr
 	httpServer.JaegerAddr = config.JaegerAddr
 	httpServer.ConsulPort = config.ConsulPort
+	httpServer.RedisDB = config.RedisDB
+	httpServer.RedisHost = config.RedisHost
+	httpServer.RedisPassword = config.RedisPassword
+	httpServer.RedisPort = config.RedisPort
 	return httpServer
 }

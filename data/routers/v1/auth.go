@@ -3,11 +3,11 @@ package v1
 import (
 	"datasource/common"
 	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 )
 
 func AuthCheck(c *gin.Context) {
-	logrus.Debug()
+	common.LogrusLogger.Error("test error")
+	common.LogrusLogger.Info("test Info")
 	var username int
 	if err := common.DB.Table("user").Where("name=?", "").Count(&username).Error; err != nil {
 		panic(err)
