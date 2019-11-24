@@ -4,7 +4,6 @@ import (
     "datasource/common"
     "datasource/common/consul"
     "datasource/common/middleware"
-    "datasource/data/models"
     "datasource/data/routers"
     "fmt"
     "github.com/gin-gonic/gin"
@@ -21,8 +20,13 @@ type (
 func (httpServer HttpServer) Serve() {
     fmt.Println("test on httpserver", httpServer.SvcName)
     engin := gin.New()
+    common.InitDB(httpServer.DbUri)
     // init logger
     middleware.LoggerInit(engin, "./log/datasource.log")
+    // init auth
+    middleware.AuthInit(engin)
+    // init exception
+    middleware.ExceptionInit(engin)
     // init router
     routers.InitRouter(engin)
     // init consul
@@ -39,9 +43,7 @@ func (httpServer HttpServer) Serve() {
 
     consulRegister.RegisterHTTP()
 
-    models.InitDB(httpServer.DbUri)
-
-    if err := engin.Run(httpServer.Address + ":" + strconv.Itoa(httpServer.Port)); err != nil {
+    if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
         panic(err)
     }
 }

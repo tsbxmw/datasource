@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"datasource/data/models"
+	"datasource/common"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
@@ -9,7 +9,7 @@ import (
 func AuthCheck(c *gin.Context) {
 	logrus.Debug()
 	var username int
-	if err := models.DB.Table("user").Where("name=?", "").Count(&username).Error; err != nil {
+	if err := common.DB.Table("user").Where("name=?", "").Count(&username).Error; err != nil {
 		panic(err)
 	}
 	c.JSON(200, gin.H{

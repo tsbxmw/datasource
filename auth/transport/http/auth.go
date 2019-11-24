@@ -1,7 +1,6 @@
 package http
 
 import (
-	"datasource/auth/models"
 	"datasource/auth/routers"
 	"datasource/common"
 	"datasource/common/consul"
@@ -39,7 +38,7 @@ func (httpServer HttpServer) Serve() {
 
 	consulRegister.RegisterHTTP()
 
-	models.InitDB(httpServer.DbUri)
+	common.InitDB(httpServer.DbUri)
 
 	if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
 		panic(err)

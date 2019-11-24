@@ -2,9 +2,7 @@ package models
 
 import (
     "datasource/common"
-    "github.com/jinzhu/gorm"
     _ "github.com/jinzhu/gorm/dialects/mysql"
-    "github.com/sirupsen/logrus"
 )
 
 type DataSourceModel struct {
@@ -16,16 +14,4 @@ type DataSourceModel struct {
 
 func (DataSourceModel) TableName() string {
     return "message"
-}
-
-var DB *gorm.DB
-
-func InitDB(DbUri string) {
-    var err error
-    DB, err = gorm.Open("mysql", DbUri)
-    if err != nil {
-        logrus.Error(err)
-        panic(err)
-    }
-    DB.SingularTable(true)
 }

@@ -2,7 +2,7 @@
   "address": "192.168.0.108",
   "consul_addr": "http://192.168.0.106",
   "consul_port": 8500,
-  "db_uri": "root:mengwei@(192.168.0.109:3306)/tcloud?parseTime=true&loc=Local",
+  "db_uri": "root:mengwei@(192.168.0.109:3306)/datasource?parseTime=true&loc=Local",
   "jaeger_addr": "192.168.0.109:5775",
   "log_file": "log/auth.log",
   "port": 9030,
