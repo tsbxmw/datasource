@@ -30,7 +30,7 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
                 After:        nil,
                 Action: func(c *cli.Context) error {
                     conf, err := ConfigFromFileName(config)
-                    if err!=nil{
+                    if err != nil {
                         panic(err)
                     }
                     //httpServer = transport.HttpServerImpl{

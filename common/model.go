@@ -19,20 +19,17 @@ type BaseModeNormal struct {
     ID int `gorm:"primary_key" json:"id"`
 }
 
-
-
 type AuthModel struct {
     BaseModel
-    UserId    int `json:"user_id"`
+    UserId    int    `json:"user_id"`
     AppKey    string `json:"app_key"`
     AppSecret string `json:"app_secret"`
-    Status    int `json:"status";gorm:"DEFAULT:0"`
+    Status    int    `json:"status";gorm:"DEFAULT:0"`
 }
 
 func (AuthModel) TableName() string {
     return "auth"
 }
-
 
 var DB *gorm.DB
 
@@ -45,4 +42,3 @@ func InitDB(DbUri string) {
     }
     DB.SingularTable(true)
 }
-

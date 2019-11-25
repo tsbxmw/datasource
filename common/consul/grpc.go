@@ -42,6 +42,5 @@ func (r *ConsulRegister) Register() error {
     return nil
 }
 
-
 func InitConsul() {
 }

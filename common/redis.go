@@ -19,9 +19,12 @@ func InitRedisPool(network string, host string, password string, database int) (
             if err != nil {
                 return nil, err
             }
-            if _, err := conn.Do("AUTH", password); err != nil {
-                conn.Close()
-                return nil, err
+            if password != "" {
+
+                if _, err := conn.Do("AUTH", password); err != nil {
+                    conn.Close()
+                    return nil, err
+                }
             }
             if _, err := conn.Do("SELECT", database); err != nil {
                 panic(err)

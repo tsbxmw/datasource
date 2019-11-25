@@ -4,6 +4,7 @@ import (
     "datasource/common"
     "datasource/common/consul"
     "datasource/common/middleware"
+    "datasource/common/mq"
     "datasource/data/routers"
     "fmt"
     "github.com/gin-gonic/gin"
@@ -21,9 +22,10 @@ func (httpServer HttpServer) Serve() {
     fmt.Println("test on httpserver", httpServer.SvcName)
     engin := gin.New()
     common.InitDB(httpServer.DbUri)
-    common.InitRedisPool("tcp", httpServer.RedisHost+":"+httpServer.RedisPort, httpServer.RedisPassword, httpServer.RedisDB)
     // init logger
     middleware.LoggerInit(engin, "./log/datasource.log")
+    common.InitRedisPool("tcp", httpServer.RedisHost+":"+httpServer.RedisPort, httpServer.RedisPassword, httpServer.RedisDB)
+    mq.MQInit(httpServer.MqUri)
     // init exception
     middleware.ExceptionInit(engin)
     // init router
@@ -47,7 +49,7 @@ func (httpServer HttpServer) Serve() {
     }
 }
 
-func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServer){
+func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServer) {
     httpServer.SvcName = config.ServiceName
     httpServer.Address = config.HttpAddr
     httpServer.Port = config.Port
@@ -59,5 +61,6 @@ func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServ
     httpServer.RedisHost = config.RedisHost
     httpServer.RedisPassword = config.RedisPassword
     httpServer.RedisPort = config.RedisPort
+    httpServer.MqUri = config.MqUri
     return httpServer
 }

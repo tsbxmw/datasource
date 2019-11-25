@@ -24,5 +24,6 @@ type (
         RedisPort     string
         RedisPassword string
         RedisDB       int
+        MqUri         string
     }
 )
