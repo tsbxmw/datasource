@@ -36,7 +36,7 @@ func (as *AuthService) TokenGenerate(userId int) (key, secret string, err error)
     }
     redisConn := common.RedisPool.Get()
     defer redisConn.Close()
-    _, err = common.RedisSet(redisConn, strconv.Itoa(userId), "{ \""+key+"\":\""+secret+"\"}")
+    _, err = common.RedisSet(redisConn, key, "{\"key\":\"" + key + "\",\"secret\":\""+secret+"\",\"user_id\":\""+strconv.Itoa(userId)+"\"}")
     return
 }
 
@@ -57,6 +57,6 @@ func (as *AuthService) RefreshToken(userId int) (key, secret string, err error) 
     }
     redisConn := common.RedisPool.Get()
     defer redisConn.Close()
-    _, err = common.RedisSet(redisConn, key, secret)
+    _, err = common.RedisSet(redisConn, key, "{\"key\":\"" + key + "\",\"secret\":\""+secret+"\",\"user_id\":\""+strconv.Itoa(userId)+"\"}")
     return
 }
