@@ -6,6 +6,7 @@ import (
     "datasource/common/middleware"
     "datasource/common/mq"
     "datasource/data/routers"
+    "datasource/data/workers"
     "fmt"
     "github.com/gin-gonic/gin"
     "strconv"
@@ -45,6 +46,26 @@ func (httpServer HttpServer) Serve() {
     consulRegister.RegisterHTTP()
 
     if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
+        panic(err)
+    }
+}
+
+func (httpServer HttpServer) ServeWorker() {
+    fmt.Println("test on httpserver", httpServer.SvcName)
+    engin := gin.New()
+    common.InitDB(httpServer.DbUri)
+    // init logger
+    middleware.LoggerInit(engin, "./log/datasource.log")
+    common.InitRedisPool("tcp", httpServer.RedisHost+":"+httpServer.RedisPort, httpServer.RedisPassword, httpServer.RedisDB)
+    mq.MQInit(httpServer.MqUri)
+    // init exception
+    middleware.ExceptionInit(engin)
+    // init router
+    routers.InitRouter(engin)
+
+    workers.WorkerInit(httpServer.MqUri)
+
+    if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port+1)); err != nil {
         panic(err)
     }
 }

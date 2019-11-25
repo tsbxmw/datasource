@@ -17,6 +17,10 @@ type (
     }
 )
 
+func (httpServer HttpServer) ServeWorker() {
+
+}
+
 func (httpServer HttpServer) Serve() {
     fmt.Println("test on httpserver", httpServer.SvcName)
     gin.SetMode(gin.ReleaseMode)
@@ -44,7 +48,7 @@ func (httpServer HttpServer) Serve() {
     consulRegister.RegisterHTTP()
 
     common.InitDB(httpServer.DbUri)
-
+    common.LogrusLogger.Info("serve on " + strconv.Itoa(httpServer.Port))
     if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
         panic(err)
     }

@@ -55,6 +55,37 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
                 HelpName:           "",
                 CustomHelpTemplate: "",
             },
+            {
+                Name:         "worker-server",
+                Aliases:      nil,
+                Usage:        "server of worker",
+                UsageText:    "",
+                Description:  "",
+                ArgsUsage:    "",
+                Category:     "",
+                BashComplete: nil,
+                Before:       nil,
+                After:        nil,
+                Action: func(c *cli.Context) error {
+                    conf, err := ConfigFromFileName(config)
+                    if err != nil {
+                        panic(err)
+                    }
+
+                    httpReal := httpServer.Init(&conf)
+                    httpReal.ServeWorker()
+
+                    return nil
+                },
+                OnUsageError:       nil,
+                Subcommands:        nil,
+                Flags:              nil,
+                SkipFlagParsing:    false,
+                HideHelp:           false,
+                Hidden:             false,
+                HelpName:           "",
+                CustomHelpTemplate: "",
+            },
         },
     }
     return

@@ -3,10 +3,40 @@
 	"ignore": "test",
 	"package": [
 		{
+			"checksumSHA1": "NkpNQgmrdzGr9HUDL8Bp5YAxt0k=",
+			"path": "cloud.google.com/go/civil",
+			"revision": "28ea45eba4e2f4bb50c9d0bd63506cb905983c05",
+			"revisionTime": "2019-08-19T22:05:04Z"
+		},
+		{
+			"checksumSHA1": "TysdGuHLiTwx5SRT2iFSQvHUoMw=",
+			"path": "github.com/denisenkom/go-mssqldb",
+			"revision": "44cdfe8d8ba9a7322b38cd8fbb0f2cb445e65a69",
+			"revisionTime": "2019-08-20T22:32:06Z"
+		},
+		{
+			"checksumSHA1": "wu8t19t2rmyrrfDfdu9v7f/+iag=",
+			"path": "github.com/denisenkom/go-mssqldb/internal/cp",
+			"revision": "44cdfe8d8ba9a7322b38cd8fbb0f2cb445e65a69",
+			"revisionTime": "2019-08-20T22:32:06Z"
+		},
+		{
+			"checksumSHA1": "zKX5r8sv52kDL+qQ/qb5OobqCSo=",
+			"path": "github.com/denisenkom/go-mssqldb/internal/querytext",
+			"revision": "44cdfe8d8ba9a7322b38cd8fbb0f2cb445e65a69",
+			"revisionTime": "2019-08-20T22:32:06Z"
+		},
+		{
 			"checksumSHA1": "P6u6fDWwSfRL2Bc6uhZ9kcoPsek=",
 			"path": "github.com/dgrijalva/jwt-go",
 			"revision": "5e25c22bd5d6de03265bbe5462dcd162f85046f6",
 			"revisionTime": "2019-06-20T18:01:02Z"
+		},
+		{
+			"checksumSHA1": "BxH9xJUqczhpL57gfKZe2/VlBHY=",
+			"path": "github.com/fatih/color",
+			"revision": "3f9d52f7176a6927daacff70a3e8d1dc2025c53e",
+			"revisionTime": "2018-10-10T23:13:11Z"
 		},
 		{
 			"checksumSHA1": "ek05bLURic4T9fEd9iE048jQzYw=",
@@ -211,16 +241,53 @@
 			"revisionTime": "2018-02-20T04:22:22Z"
 		},
 		{
+			"checksumSHA1": "GKTFbGomCP1fhH7mFecvwKvh7bc=",
+			"path": "github.com/lib/pq",
+			"revision": "78223426e7c66d631117c0a9da1b7f3fde4d23a5",
+			"revisionTime": "2019-08-13T06:55:22Z"
+		},
+		{
+			"checksumSHA1": "EnMmNGgpDa5sNw0Zs5RhvNDcP2g=",
+			"path": "github.com/lib/pq/hstore",
+			"revision": "78223426e7c66d631117c0a9da1b7f3fde4d23a5",
+			"revisionTime": "2019-08-13T06:55:22Z"
+		},
+		{
+			"checksumSHA1": "ATnwV0POluBNQEMjPdylodz0oK0=",
+			"path": "github.com/lib/pq/oid",
+			"revision": "78223426e7c66d631117c0a9da1b7f3fde4d23a5",
+			"revisionTime": "2019-08-13T06:55:22Z"
+		},
+		{
+			"checksumSHA1": "n0MMCrKKsQuuhv7vLsrtRUGJVA8=",
+			"path": "github.com/lib/pq/scram",
+			"revision": "78223426e7c66d631117c0a9da1b7f3fde4d23a5",
+			"revisionTime": "2019-08-13T06:55:22Z"
+		},
+		{
 			"checksumSHA1": "rmPrVPSxkWI5TXpzYWb2LZW03UU=",
 			"path": "github.com/magiconair/properties",
 			"revision": "a586bb8b7deaae2a0eb4c6c8b63a539425628137",
 			"revisionTime": "2019-10-19T07:49:31Z"
 		},
 		{
+			"checksumSHA1": "XEV3BI3nHA/rNa/tIgB7fVCrDww=",
+			"origin": "github.com/fatih/color/vendor/github.com/mattn/go-colorable",
+			"path": "github.com/mattn/go-colorable",
+			"revision": "3f9d52f7176a6927daacff70a3e8d1dc2025c53e",
+			"revisionTime": "2018-10-10T23:13:11Z"
+		},
+		{
 			"checksumSHA1": "gKYUfMuLpEwRHZFjKzGIL0VdgKg=",
 			"path": "github.com/mattn/go-isatty",
 			"revision": "2a2f0ea997f99becfd8423e4f337d171753fe685",
 			"revisionTime": "2019-11-12T05:12:48Z"
+		},
+		{
+			"checksumSHA1": "idRh0ki6W/WozmKofGT4oRInwfQ=",
+			"path": "github.com/mattn/go-sqlite3",
+			"revision": "e24345b069d4892cade3b897a2e806287f76d03f",
+			"revisionTime": "2019-08-19T15:43:48Z"
 		},
 		{
 			"checksumSHA1": "V/quM7+em2ByJbWBLOsEwnY3j/Q=",
@@ -275,6 +342,12 @@
 			"path": "github.com/sirupsen/logrus",
 			"revision": "67a7fdcf741f4d5cee82cb9800994ccfd4393ad0",
 			"revisionTime": "2019-10-26T11:39:18Z"
+		},
+		{
+			"checksumSHA1": "qZNobh5lSHqBxtNnAkLFVl6YviE=",
+			"path": "github.com/smallnest/rpcx/log",
+			"revision": "ef172eb5e65115e9bb835143ca399072b5441ada",
+			"revisionTime": "2019-10-21T08:22:35Z"
 		},
 		{
 			"checksumSHA1": "2d0rR/VhqllUdrcH6kwHHrhqJ2E=",
@@ -389,6 +462,12 @@
 			"path": "github.com/urfave/cli",
 			"revision": "92fa29ce8dd4f11ddd9446be12f432ec67b4a6fa",
 			"revisionTime": "2019-11-19T08:04:40Z"
+		},
+		{
+			"checksumSHA1": "UDvj5huw3BaGehfVRCB1UGQAtP4=",
+			"path": "golang.org/x/crypto/md4",
+			"revision": "8986dd9e96cf0a6f74da406c005ba3df38527c04",
+			"revisionTime": "2019-10-28T16:10:41Z"
 		},
 		{
 			"checksumSHA1": "dr5+PfIRzXeN+l1VG+s0lea9qz8=",

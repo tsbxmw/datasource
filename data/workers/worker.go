@@ -1,41 +1,16 @@
-package main
+package workers
 
 import (
     "datasource/common/mq"
-    "fmt"
+    "datasource/common/mq/worker"
 )
 
-type AReceiver struct {
-
-}
-
-func (ar AReceiver)QueueName() string {
-    return "data_1"
-}
 
 
-func (ar AReceiver)RouterKey() string {
-    return "data_1"
-}
-
-
-func (ar AReceiver)OnError(error) {
-
-}
-
-func (ar AReceiver)OnReceive(body []byte) bool {
-    fmt.Println(body)
-    return true
-}
-
-
-func main() {
-    // 假设这里有一个AReceiver和BReceiver
-    aReceiver := AReceiver{}
-    mq.MQInit("amqp://mengwei:mengwei@tcloud.tsbx.com:5672/")
-    mq := mq.New()
+func WorkerInit(MqUri string) {
+    mq.MQInit(MqUri)
+    mq := worker.New()
     // 将这个接收者注册到
-    mq.RegisterReceiver(aReceiver)
+    mq.RegisterReceiver(AReceiver{})
     mq.Start()
 }
-
