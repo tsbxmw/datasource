@@ -24,3 +24,6 @@ func DataInit(c *gin.Context) {
         "username": "test",
     })
 }
+
+
+func Data

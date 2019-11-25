@@ -33,9 +33,11 @@ func AuthMiddleware() gin.HandlerFunc {
             auth := common.AuthModel{}
             if err := common.DB.Table("auth").Where("app_key=? and app_secret=?", key, secret).First(&auth).Error; err != nil {
                 logrus.Error(err)
-                ginResponse := common.GinResponse{Ctx: c}
-                ginResponse.Response(common.HTTP_AUTH_ERROR, err.Error(), []string{})
-                c.Abort()
+                c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
+                    "code":    common.HTTP_AUTH_ERROR,
+                    "message": err.Error(),
+                    "data":    []string{},
+                })
             }
         } else {
             authRedis := AuthRedis{}
