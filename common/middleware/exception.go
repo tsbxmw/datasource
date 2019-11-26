@@ -30,10 +30,6 @@ func ExceptionMiddleware() (gin.HandlerFunc) {
     return func(c *gin.Context) {
         defer func() {
             if err := recover(); err != nil {
-                //DebugStack := ""
-                //for _, v := range strings.Split(string(debug.Stack()), "\n") {
-                //	DebugStack += v + "\n"
-                //}
                 var brokenPipe bool
                 if ne, ok := err.(*net.OpError); ok {
                     if se, ok := ne.Err.(*os.SyscallError); ok {
@@ -58,10 +54,10 @@ func ExceptionMiddleware() (gin.HandlerFunc) {
                 } else {
                     common.LogrusLogger.Error(err)
                 }
-                c.AbortWithStatusJSON(common.HTTP_INTERNAL_ERROR, gin.H{
-                    "message": "Internal Server Error",
+                c.AbortWithStatusJSON(common.HTTP_STATUS_OK, gin.H{
+                    "message": err.(error).Error(),
                     "data":    []string{},
-                    "code":    common.HTTP_INTERNAL_ERROR,
+                    "code":    c.Keys["code"],
                 })
             }
         }()

@@ -10,7 +10,7 @@ func DataInit(c *gin.Context) {
     common.LogrusLogger.Error("test error")
     common.LogrusLogger.Info("test Info")
     var (
-        ds *service.DataSourceService
+        ds  *service.DataSourceService
         err error
     )
     ds, err = service.NewDataSourceMgr()
@@ -26,4 +26,49 @@ func DataInit(c *gin.Context) {
 }
 
 
-func Data
+func DataUpload(c *gin.Context) {
+    common.LogrusLogger.Info("Data Upload")
+
+}
+
+
+func TaskInit(c *gin.Context) {
+    common.LogrusLogger.Info("Task Init")
+    var (
+        //taskName string
+        //sdkVersion string
+        //userId int
+        err error
+    )
+    task := service.TaskInitRequest{}
+    if err:=c.ShouldBindJSON(&task); err!=nil{
+        common.LogrusLogger.Error(err)
+        common.InitKey(c)
+        c.Keys["code"] = common.HTTP_PARAMS_ERROR
+        panic(err)
+    }
+    //taskName = c.PostForm("task_name")
+    //sdkVersion = c.PostForm("sdk_version")
+    //if taskName == "" {
+    //    panic(errors.New("task_name should not be null"))
+    //}
+    authGlobal := c.Keys["auth"].(*common.AuthGlobal)
+    task.UserId = authGlobal.UserId
+
+    var (
+        ds  *service.DataSourceService
+    )
+    ds, err = service.NewDataSourceMgr()
+    if err != nil {
+        common.LogrusLogger.Error(err)
+        panic(err)
+    }
+    taskId := ds.TaskInit(&task)
+    c.JSON(200, common.Response{
+        Code: 200,
+        Message: "success",
+        Data: gin.H{
+            "task_id": taskId,
+        },
+    })
+}

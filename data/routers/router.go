@@ -9,7 +9,9 @@ import (
 func InitRouter(e *gin.Engine) {
     GroupV1 := e.Group("/v1", middleware.AuthMiddleware())
     {
-        GroupV1.GET("/auth", v1.DataInit)
+        GroupV1.GET("/data/", v1.DataInit)
+        GroupV1.POST("/data/upload", v1.DataUpload)
+        GroupV1.POST("/data/task", v1.TaskInit)
     }
 
     GroupHealth := e.Group("/v1/health")

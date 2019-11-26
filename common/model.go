@@ -12,11 +12,22 @@ type BaseModel struct {
     ID           int       `gorm:"primary_key" json:"id"`
     CreationTime time.Time `json:"creation_time"`
     ModifiedTime time.Time `json:"modified_time"`
-    //Ext          string    `json:"ext"`
 }
 
 type BaseModeNormal struct {
     ID int `gorm:"primary_key" json:"id"`
+}
+
+
+type BaseModeName struct {
+    ID int `gorm:"primary_key" json:"id"`
+    Name string `json:"name"`
+}
+
+
+type BaseModelCreate struct {
+    ID           int       `gorm:"primary_key" json:"id"`
+    CreationTime time.Time `json:"creation_time"`
 }
 
 type AuthModel struct {
@@ -41,4 +52,16 @@ func InitDB(DbUri string) {
         panic(err)
     }
     DB.SingularTable(true)
+}
+
+
+
+type AuthRedis struct {
+    UserId string `json:"user_id"`
+    Secret string `json:"secret"`
+    Key    string `json:"key"`
+}
+
+type AuthGlobal struct {
+    UserId int `json:"user_id"`
 }

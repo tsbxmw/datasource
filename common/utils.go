@@ -1,6 +1,9 @@
 package common
 
-import "net"
+import (
+    "github.com/gin-gonic/gin"
+    "net"
+)
 
 func LocalIP() string {
     addrs, err := net.InterfaceAddrs()
@@ -15,4 +18,13 @@ func LocalIP() string {
         }
     }
     return ""
+}
+
+
+func InitKey(c *gin.Context) {
+    if len(c.Keys) == 0 {
+        c.Keys = make(map[string]interface{})
+        c.Keys["auth"] = &AuthGlobal{}
+        c.Keys["code"] = 0
+    }
 }

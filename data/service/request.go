@@ -1,0 +1,9 @@
+package service
+
+type (
+    TaskInitRequest struct{
+        UserId int `json:"user_id"`
+        TaskName string `json:"task_name" binding:"required"`
+        SdkVersion string `json:"sdk_version"`
+    }
+)
