@@ -13,7 +13,7 @@ func DataInit(c *gin.Context) {
         ds  *service.DataSourceService
         err error
     )
-    ds, err = service.NewDataSourceMgr()
+    ds, err = service.NewDataSourceMgr(c)
     if err != nil {
         common.LogrusLogger.Error(err)
         panic(err)
@@ -58,7 +58,7 @@ func TaskInit(c *gin.Context) {
     var (
         ds  *service.DataSourceService
     )
-    ds, err = service.NewDataSourceMgr()
+    ds, err = service.NewDataSourceMgr(c)
     if err != nil {
         common.LogrusLogger.Error(err)
         panic(err)

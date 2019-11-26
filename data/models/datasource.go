@@ -30,3 +30,14 @@ type TaskModel struct {
 func (TaskModel) TableName() string {
     return "task"
 }
+
+type TaskUserModel struct {
+    common.BaseModel
+    UserId int `json:"user_id"`
+    TaskId int `json:"task_id"`
+    Remark string `json:"remark"`
+}
+
+func (TaskUserModel) TableName() string {
+    return "task_user"
+}

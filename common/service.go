@@ -1,9 +1,7 @@
 package common
 
-import (
-    "github.com/jinzhu/gorm"
-)
+import "github.com/gin-gonic/gin"
 
 type BaseService struct {
-    Conn gorm.DB
+    Ctx *gin.Context
 }

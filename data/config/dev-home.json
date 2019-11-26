@@ -13,5 +13,6 @@
   "redis_host": "192.168.0.107",
   "redis_password": "tcloud",
   "redis_port": "6379",
-  "redis_db": 1
+  "redis_db": 1,
+  "mq_uri": "amqp://mengwei:mengwei@tcloud.tsbx.com:5672/"
 }
