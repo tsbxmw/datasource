@@ -4,6 +4,7 @@ import (
     "datasource/common"
     "datasource/common/mq"
     "datasource/data/models"
+    "encoding/json"
     "github.com/gin-gonic/gin"
     "github.com/streadway/amqp"
     "time"
@@ -40,7 +41,6 @@ func (ds *DataSourceService) AuthCheck(key, secret string) bool {
         false,
         nil,
     )
-    common.LogrusLogger.Info("test on ds authcheck 1 ")
     //mq.QueueAdd(queueName, q)
 
     //生产者将消息发送到默认交换器中，不是发送到队列中
@@ -55,16 +55,46 @@ func (ds *DataSourceService) AuthCheck(key, secret string) bool {
             Body:         []byte("test"),
         })
     if err != nil {
-
-        common.LogrusLogger.Info("test on ds authcheck 2 ")
         panic(err)
     }
-    common.LogrusLogger.Info("test on ds authcheck 3 ")
     return false
 }
 
-func (ds *DataSourceService) DataUpload() {
+func (ds *DataSourceService) DataUpload(req *DataUploadRequest) *DataUploadResponse {
+    common.LogrusLogger.Info("test on DataUpload")
 
+    res := DataUploadResponse{}
+    body, err := json.Marshal(req)
+    if err != nil {
+        panic(err)
+    }
+
+    channel := mq.GetMqChannel()
+    queueName := "data_1"
+    q, err := channel.QueueDeclare(
+        queueName,
+        true, // 设置为true之后RabbitMQ将永远不会丢失队列，否则重启或异常退出的时候会丢失
+        false,
+        false,
+        false,
+        nil,
+    )
+
+    //生产者将消息发送到默认交换器中，不是发送到队列中
+    err = channel.Publish(
+        "data_1", //默认交换器
+        q.Name,   //使用队列的名字来当作route-key是因为声明的每一个队列都有一个隐式路由到默认交换器
+        false,
+        false,
+        amqp.Publishing{
+            DeliveryMode: amqp.Persistent,
+            ContentType:  "text/plain",
+            Body:         []byte(body),
+        })
+    if err != nil {
+        panic(err)
+    }
+    return &res
 }
 
 func (ds *DataSourceService) TaskInit(req *TaskInitRequest) *TaskInitResponse {
@@ -85,6 +115,7 @@ func (ds *DataSourceService) TaskInit(req *TaskInitRequest) *TaskInitResponse {
     common.LogrusLogger.Error("TASK init")
     if taskModel.ID > 0 {
         res.TaskId = taskModel.ID
+        res.TaskName = taskModel.Name
     } else {
         taskModel.UserId = req.UserId
         taskModel.Name = req.TaskName
@@ -92,6 +123,7 @@ func (ds *DataSourceService) TaskInit(req *TaskInitRequest) *TaskInitResponse {
         taskModel.CreationTime = time.Now()
         taskModel.ModifiedTime = time.Now()
         if err = common.DB.Table(taskModel.TableName()).Create(&taskModel).Error; err != nil {
+            common.DB.Rollback()
             common.LogrusLogger.Error(err)
             panic(err)
         }
@@ -109,6 +141,7 @@ func (ds *DataSourceService) TaskInit(req *TaskInitRequest) *TaskInitResponse {
             panic(err)
         }
         res.TaskId = taskModel.ID
+        res.TaskName = taskModel.Name
     }
     return &res
 }
@@ -120,7 +153,8 @@ func (ds *DataSourceService) LabelInit(req *LabelInitRequest) (*LabelInitRespons
     )
     labelModel := models.LabelModel{}
     if err = common.DB.Table(labelModel.TableName()).Where("task_id=? and name=?",req.TaskId, req.LabelName).First(&labelModel).Error; err != nil {
-        if err.Error() != "record not found" { common.LogrusLogger.Error(err)
+        if err.Error() != "record not found" {
+            common.LogrusLogger.Error(err)
             common.InitKey(ds.Ctx)
             ds.Ctx.Keys["code"] = common.MYSQL_QUERY_ERROR
             panic(err)
@@ -128,6 +162,7 @@ func (ds *DataSourceService) LabelInit(req *LabelInitRequest) (*LabelInitRespons
     }
     if labelModel.ID > 0 {
         res.LabelId = labelModel.ID
+        res.LabelName = labelModel.Name
     } else {
         labelModel.TaskId = req.TaskId
         labelModel.Name = req.LabelName
@@ -139,6 +174,7 @@ func (ds *DataSourceService) LabelInit(req *LabelInitRequest) (*LabelInitRespons
         }
 
         res.LabelId = labelModel.ID
+        res.LabelName = labelModel.Name
     }
     return &res
 }

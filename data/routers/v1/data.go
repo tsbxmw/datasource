@@ -29,6 +29,30 @@ func DataInit(c *gin.Context) {
 func DataUpload(c *gin.Context) {
     common.LogrusLogger.Info("Data Upload")
 
+    var (
+        ds *service.DataSourceService
+        err error
+    )
+
+    req := service.DataUploadRequest{}
+    if err:=c.ShouldBindJSON(&req); err!=nil{
+        common.LogrusLogger.Error(err)
+        common.InitKey(c)
+        c.Keys["code"] = common.HTTP_PARAMS_ERROR
+        panic(err)
+    }
+    ds, err = service.NewDataSourceMgr(c)
+    if err != nil {
+        common.LogrusLogger.Error(err)
+        panic(err)
+    }
+    res := ds.DataUpload(&req)
+
+    c.JSON(200, common.Response{
+        Code: 200,
+        Message: "success",
+        Data: res,
+    })
 }
 
 
