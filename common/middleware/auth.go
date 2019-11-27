@@ -5,7 +5,6 @@ import (
     "encoding/json"
     "fmt"
     "github.com/gin-gonic/gin"
-    "github.com/sirupsen/logrus"
     "strconv"
 )
 
@@ -34,29 +33,33 @@ func AuthMiddleware() gin.HandlerFunc {
 
         if secretTemp, err := common.RedisGet(redisConn, key); err != nil {
             if err := common.DB.Table("auth").Where("app_key=? and app_secret=?", key, secret).First(&auth).Error; err != nil {
-                logrus.Error(err)
-                c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
-                    "code":    common.HTTP_AUTH_ERROR,
-                    "message": err.Error(),
-                    "data":    []string{},
-                })
+                c.Keys["code"] = common.REDIS_GET_ERROR
+                panic(err)
+                //c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
+                //    "code":    common.HTTP_AUTH_ERROR,
+                //    "message": err.Error(),
+                //    "data":    []string{},
+                //})
             }
         } else {
             fmt.Println(secretTemp)
             if err = json.Unmarshal([]byte(secretTemp), &authRedis); err != nil {
-                logrus.Error(err)
-                c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
-                    "code":    common.HTTP_AUTH_ERROR,
-                    "message": err.Error(),
-                    "data":    []string{},
-                })
+                c.Keys["code"] = common.REDIS_GET_ERROR
+                panic(err)
+                //c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
+                //    "code":    common.HTTP_AUTH_ERROR,
+                //    "message": err.Error(),
+                //    "data":    []string{},
+                //})
             }
             if secret != authRedis.Secret {
-                c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
-                    "code":    common.HTTP_AUTH_ERROR,
-                    "message": "auth with redis Error",
-                    "data":    []string{},
-                })
+                c.Keys["code"] = common.HTTP_AUTH_ERROR
+                panic(err)
+                //c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
+                //    "code":    common.HTTP_AUTH_ERROR,
+                //    "message": "auth with redis Error",
+                //    "data":    []string{},
+                //})
             }
             redisFlag = true
         }

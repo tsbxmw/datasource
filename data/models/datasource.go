@@ -33,11 +33,21 @@ func (TaskModel) TableName() string {
 
 type TaskUserModel struct {
     common.BaseModel
-    UserId int `json:"user_id"`
-    TaskId int `json:"task_id"`
+    UserId int    `json:"user_id"`
+    TaskId int    `json:"task_id"`
     Remark string `json:"remark"`
 }
 
 func (TaskUserModel) TableName() string {
     return "task_user"
+}
+
+type LabelModel struct {
+    common.BaseModel
+    TaskId int    `json:"task_id"`
+    Name   string `json:"name"`
+}
+
+func (LabelModel) TableName() string {
+    return "label"
 }

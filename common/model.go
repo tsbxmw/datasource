@@ -52,8 +52,14 @@ func InitDB(DbUri string) {
         panic(err)
     }
     DB.SingularTable(true)
+    DB.DB().SetMaxIdleConns(10)
+    DB.DB().SetMaxOpenConns(100)
+    DB.DB().SetConnMaxLifetime(2 * time.Second)
 }
 
+func CloseDB() {
+    defer DB.Close()
+}
 
 
 type AuthRedis struct {
