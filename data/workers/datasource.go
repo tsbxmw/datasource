@@ -5,6 +5,7 @@ import (
     "datasource/data/models"
     "datasource/data/service"
     "encoding/json"
+    "fmt"
     "time"
 )
 
@@ -24,6 +25,7 @@ func (ar AReceiver) OnError(error) {
 }
 
 func (ar AReceiver) OnReceive(body []byte) bool {
+    fmt.Println("here is the a receiver")
     req := service.DataUploadRequest{}
     common.LogrusLogger.Info(string(body))
     err := json.Unmarshal(body, &req)

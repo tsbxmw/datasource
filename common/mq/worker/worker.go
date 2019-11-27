@@ -1,6 +1,7 @@
 package worker
 
 import (
+    "datasource/common"
     "datasource/common/mq"
     "fmt"
     "github.com/smallnest/rpcx/log"
@@ -17,7 +18,7 @@ type Receiver interface {
 }
 
 type RabbitMQ struct {
-    wg sync.WaitGroup
+    wg           sync.WaitGroup
     channel      *amqp.Channel
     exchangeName string // exchange的名称
     exchangeType string // exchange的类型
@@ -40,11 +41,11 @@ func (rmq *RabbitMQ) prepareExchange() error {
     err := rmq.channel.ExchangeDeclare(
         rmq.exchangeName, // exchange
         rmq.exchangeType, // type
-        true,            // durable
-        false,           // autoDelete
-        false,           // internal
-        false,           // noWait
-        nil,             // args
+        true,             // durable
+        false,            // autoDelete
+        false,            // internal
+        false,            // noWait
+        nil,              // args
     )
 
     if nil != err {
@@ -53,7 +54,7 @@ func (rmq *RabbitMQ) prepareExchange() error {
     return nil
 }
 
-func (rmq *RabbitMQ) Refresh() bool{
+func (rmq *RabbitMQ) Refresh() bool {
     mq.MQInit(mq.MqUriStore)
     return true
 }
@@ -102,7 +103,6 @@ func (rmq *RabbitMQ) Start() {
     }
 }
 
-
 // RegisterReceiver 注册一个用于接收指定队列指定路由的数据接收者
 func (rmq *RabbitMQ) RegisterReceiver(receiver Receiver) {
     rmq.receivers = append(rmq.receivers, receiver)
@@ -134,10 +134,10 @@ func (rmq *RabbitMQ) listen(receiver Receiver) {
 
     // 将Queue绑定到Exchange上去
     err = rmq.channel.QueueBind(
-        queueName,       // queue name
-        routerKey,       // routing key
+        queueName,        // queue name
+        routerKey,        // routing key
         rmq.exchangeName, // exchange
-        false,           // no-wait
+        false,            // no-wait
         nil,
     )
     if nil != err {
@@ -169,7 +169,7 @@ func (rmq *RabbitMQ) listen(receiver Receiver) {
             log.Warnf("receiver 数据处理失败，将要重试")
             time.Sleep(1 * time.Second)
         }
-
+        common.LogrusLogger.Info("Receive msg ok!")
         // 确认收到本条消息, multiple必须为false
         msg.Ack(false)
     }
