@@ -22,4 +22,4 @@ Autotest datasource platform by go
 ## Mysql Model design
 
 
-
+![](./doc/image/datasource.png)
