@@ -1,62 +1,90 @@
 package service
 
 import (
-    "datasource/common"
-    "github.com/google/uuid"
-    "strconv"
-    "time"
+	"datasource/common"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
+	"strconv"
+	"time"
 )
 
 type (
-    AuthMgr interface {
-        TokenGenerate(userId int) (key, secret string, err error)
-        GetToken(userId int) (key, secret string, err error)
-        RefreshToken(usreId int) (key, secret string, err error)
-    }
+	AuthMgr interface {
+		TokenGenerate(userId int) (key, secret string, err error)
+		GetToken(userId int) (key, secret string, err error)
+		RefreshToken(usreId int) (key, secret string, err error)
+	}
 
-    AuthService struct {
-    }
+	AuthService struct {
+		common.BaseService
+	}
 )
 
-func (as *AuthService) TokenGenerate(userId int) (key, secret string, err error) {
-    authModel := common.AuthModel{}
-    if err = common.DB.Where("user_id=?", userId).First(&authModel).Error; err != nil {
-        key = uuid.New().String()[:8]
-        secret = uuid.New().String()[:16]
-        authModel.AppKey = key
-        authModel.AppSecret = secret
-        authModel.BaseModel.ModifiedTime = time.Now()
+func NewAuthMgr(c *gin.Context) (*AuthService) {
+	return &AuthService{
+		BaseService: common.BaseService{
+			Ctx: c,
+		},
+	}
+}
 
-        if err = common.DB.Table(authModel.TableName()).Create(&authModel).Error; err != nil {
-            return
-        }
-    } else {
-        key = authModel.AppKey
-        secret = authModel.AppSecret
-    }
-    redisConn := common.RedisPool.Get()
-    defer redisConn.Close()
-    _, err = common.RedisSet(redisConn, key, "{\"key\":\"" + key + "\",\"secret\":\""+secret+"\",\"user_id\":\""+strconv.Itoa(userId)+"\"}")
-    return
+func (as *AuthService) TokenGenerate(req *TokenRequest) *TokenResponse {
+
+	res := TokenResponse{}
+
+	authModel := common.AuthModel{}
+	if err := common.DB.Where("user_id=?", req.UserId).First(&authModel).Error; err != nil {
+		res.Key = uuid.New().String()[:8]
+		res.Secret = uuid.New().String()[:16]
+		authModel.AppKey = res.Key
+		authModel.AppSecret = res.Secret
+		authModel.BaseModel.ModifiedTime = time.Now()
+		authModel.BaseModel.CreationTime = time.Now()
+		authModel.UserId = req.UserId
+
+		if err = common.DB.Table(authModel.TableName()).Create(&authModel).Error; err != nil {
+			as.Ctx.Keys["code"] = common.MYSQL_CREATE_ERROR
+			panic(err)
+		}
+	} else {
+		res.Key = authModel.AppKey
+		res.Secret = authModel.AppSecret
+	}
+	redisConn := common.RedisPool.Get()
+	defer redisConn.Close()
+	if _, err := common.RedisSet(redisConn, res.Key, "{\"key\":\""+res.Key+"\",\"secret\":\""+res.Secret+"\",\"user_id\":\""+strconv.Itoa(req.UserId)+"\"}"); err != nil {
+		as.Ctx.Keys["code"] = common.REDIS_SET_ERROR
+		panic(err)
+	}
+	return &res
 }
 
 func (as *AuthService) GetToken(userId int) (key, secret string, err error) {
-    return
+	return
 }
 
-func (as *AuthService) RefreshToken(userId int) (key, secret string, err error) {
-    authModel := common.AuthModel{}
-    if err = common.DB.Where("user_id=?", userId).First(&authModel).Error; err != nil {
-        return
-    }
-    secret = uuid.New().String()[:16]
-    key = authModel.AppKey
-    authModel.AppSecret = secret
-    if err = common.DB.Table(authModel.TableName()).Update(&authModel).Error; err != nil {
-        return
-    }
-    redisConn := common.RedisPool.Get()
-    defer redisConn.Close()
-    _, err = common.RedisSet(redisConn, key, "{\"key\":\"" + key + "\",\"secret\":\""+secret+"\",\"user_id\":\""+strconv.Itoa(userId)+"\"}")
-    return
+func (as *AuthService) RefreshToken(req *TokenRequest) *TokenResponse {
+	authModel := common.AuthModel{}
+	res := TokenResponse{}
+	if err := common.DB.Where("user_id=?", req.UserId).First(&authModel).Error; err != nil {
+		if err.Error() != "record not found" {
+			as.Ctx.Keys["code"] = common.MYSQL_QUERY_ERROR
+			panic(err)
+		}
+		return as.TokenGenerate(req)
+	}
+	res.Secret = uuid.New().String()[:16]
+	res.Key = authModel.AppKey
+	authModel.AppSecret = res.Secret
+	if err := common.DB.Table(authModel.TableName()).Save(&authModel).Error; err != nil {
+		as.Ctx.Keys["code"] = common.MYSQL_UPDATE_ERROR
+		panic(err)
+	}
+	redisConn := common.RedisPool.Get()
+	defer redisConn.Close()
+	if _, err := common.RedisSet(redisConn, res.Key, "{\"key\":\""+res.Key+"\",\"secret\":\""+res.Secret+"\",\"user_id\":\""+strconv.Itoa(req.UserId)+"\"}"); err != nil {
+		as.Ctx.Keys["code"] = common.REDIS_SET_ERROR
+		panic(err)
+	}
+	return &res
 }

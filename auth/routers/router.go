@@ -8,8 +8,8 @@ import (
 func InitRouter(r *gin.Engine) {
     GroupV1 := r.Group("/v1")
     {
-        GroupV1.GET("/auth/token", v1.Token)
-        GroupV1.GET("/auth/token/refresh", v1.RefreshToken)
+        GroupV1.POST("/auth/token", v1.Token)
+        GroupV1.POST("/auth/token/refresh", v1.RefreshToken)
         GroupV1.GET("/health", v1.HealthCheck)
     }
 }
