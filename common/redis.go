@@ -1,6 +1,7 @@
 package common
 
 import (
+    "encoding/json"
     "fmt"
     "github.com/garyburd/redigo/redis"
 )
@@ -37,7 +38,7 @@ func InitRedisPool(network string, host string, password string, database int) (
     return
 }
 
-func RedisSet(redisConn redis.Conn, key string, value string) (code int, err error) {
+func RedisSet(redisConn redis.Conn, key string, value interface{}) (code int, err error) {
     //if parent := opentracing.SpanFromContext(ctx); parent != nil {
     //    pctx := parent.Context()
     //    if tracer := opentracing.GlobalTracer(); tracer != nil {
@@ -45,9 +46,15 @@ func RedisSet(redisConn redis.Conn, key string, value string) (code int, err err
     //        defer redisSpan.Finish()
     //    }
     //}
+    var valueJson []byte
 
-    if _, err := redisConn.Do("Set", key, value); err != nil {
-        panic(err)
+    if valueJson, err = json.Marshal(value); err != nil {
+        return REDIS_SET_ERROR, err
+    }
+
+    if _, err := redisConn.Do("Set", key, valueJson); err != nil {
+
+        return REDIS_SET_ERROR, err
     }
     return
 }
