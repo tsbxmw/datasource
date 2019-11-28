@@ -13,13 +13,15 @@ var MqQueue map[string]amqp.Queue
 
 var MqUriStore string
 
-func MQInit(rmqUri string) {
+func MQInit(rmqUri string)(*amqp.Connection) {
     var err error
     MqUriStore = rmqUri
-    MqConn, err = amqp.Dial(rmqUri)
+    conn, err := amqp.Dial(rmqUri)
     if err != nil {
         panic(err)
     }
+    MqConn = conn
+    return conn
 }
 
 func MQChannelRefresh() {
@@ -35,8 +37,12 @@ func GetMqChannel() *amqp.Channel {
     if MqConn.IsClosed() {
         MQInit(MqUriStore)
     }
-    MQChannelRefresh()
-    return MqChan
+    //MQChannelRefresh()
+    MqChan1, err := MqConn.Channel()
+    if err != nil {
+        panic(err)
+    }
+    return MqChan1
 }
 
 func QueueAdd(key string, queue amqp.Queue) {

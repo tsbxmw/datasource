@@ -5,7 +5,6 @@ import (
     "encoding/json"
     "fmt"
     "github.com/gin-gonic/gin"
-    "strconv"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
@@ -64,11 +63,7 @@ func AuthMiddleware() gin.HandlerFunc {
             redisFlag = true
         }
         if redisFlag {
-            if value, err:=strconv.Atoi(authRedis.UserId); err != nil {
-                panic(err)
-            } else {
-                authGlobal.UserId = value
-            }
+            authGlobal.UserId = authRedis.UserId
         } else {
             authGlobal.UserId = auth.UserId
         }

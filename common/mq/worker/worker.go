@@ -19,6 +19,7 @@ type Receiver interface {
 
 type RabbitMQ struct {
     wg           sync.WaitGroup
+    conn         *amqp.Connection
     channel      *amqp.Channel
     exchangeName string // exchange的名称
     exchangeType string // exchange的类型
@@ -55,7 +56,12 @@ func (rmq *RabbitMQ) prepareExchange() error {
 }
 
 func (rmq *RabbitMQ) Refresh() bool {
-    mq.MQInit(mq.MqUriStore)
+    //mq.MQInit(mq.MqUriStore)
+    var err error
+    rmq.conn, err = amqp.Dial(mq.MqUriStore)
+    if err != nil {
+        panic(err)
+    }
     return true
 }
 
@@ -69,10 +75,11 @@ func (rmq *RabbitMQ) run() {
     }
 
     // 获取新的channel对象
-    rmq.channel, err = mq.MqConn.Channel()
+    rmq.channel, err = rmq.conn.Channel()
     if err != nil {
         panic(err)
     }
+    defer rmq.channel.Close()
 
     // 初始化Exchange
     rmq.prepareExchange()
@@ -112,6 +119,7 @@ func (rmq *RabbitMQ) RegisterReceiver(receiver Receiver) {
 // 这里需要针对每一个接收者启动一个goroutine来执行listen
 // 该方法负责从每一个接收者监听的队列中获取数据，并负责重试
 func (rmq *RabbitMQ) listen(receiver Receiver) {
+    common.LogrusLogger.Info("start receiver!")
     defer rmq.wg.Done()
 
     // 这里获取每个接收者需要监听的队列和路由
@@ -167,7 +175,7 @@ func (rmq *RabbitMQ) listen(receiver Receiver) {
         // 直到数据处理成功后再返回，然后才会回复RabbitMQ ack
         for !receiver.OnReceive(msg.Body) {
             log.Warnf("receiver 数据处理失败，将要重试")
-            time.Sleep(1 * time.Second)
+            //time.Sleep(1 * time.Second)
         }
         common.LogrusLogger.Info("Receive msg ok!")
         // 确认收到本条消息, multiple必须为false

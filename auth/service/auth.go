@@ -1,7 +1,6 @@
 package service
 
 import (
-    "datasource/auth/models"
     "datasource/common"
     "github.com/gin-gonic/gin"
     "github.com/google/uuid"
@@ -50,7 +49,7 @@ func (as *AuthService) TokenGenerate(req *TokenRequest) *TokenResponse {
         res.Key = authModel.AppKey
         res.Secret = authModel.AppSecret
     }
-    redisAuthModel := models.RedisAuthModel{
+    redisAuthModel := common.AuthRedis{
         Key:    res.Key,
         Secret: res.Secret,
         UserId: req.UserId,
@@ -85,7 +84,7 @@ func (as *AuthService) RefreshToken(req *TokenRequest) *TokenResponse {
         as.Ctx.Keys["code"] = common.MYSQL_UPDATE_ERROR
         panic(err)
     }
-    redisAuthModel := models.RedisAuthModel{
+    redisAuthModel := common.AuthRedis{
         Key:    res.Key,
         Secret: res.Secret,
         UserId: req.UserId,

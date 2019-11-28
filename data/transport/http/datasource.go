@@ -30,6 +30,7 @@ func (httpServer HttpServer) Serve() {
 
     common.InitRedisPool("tcp", httpServer.RedisHost+":"+httpServer.RedisPort, httpServer.RedisPassword, httpServer.RedisDB)
     mq.MQInit(httpServer.MqUri)
+    defer mq.MqConn.Close()
     // init exception
     middleware.ExceptionInit(engin)
     // init router
@@ -69,7 +70,7 @@ func (httpServer HttpServer) ServeWorker() {
     workers.WorkerInit(httpServer.MqUri)
 
     if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port+1)); err != nil {
-        panic(err)
+       panic(err)
     }
 }
 

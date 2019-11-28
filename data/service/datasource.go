@@ -32,6 +32,7 @@ func NewDataSourceMgr(c *gin.Context) (*DataSourceService, error) {
 func (ds *DataSourceService) AuthCheck(key, secret string) bool {
     common.LogrusLogger.Info("test on ds authcheck")
     channel := mq.GetMqChannel()
+    defer channel.Close()
     queueName := "data_1"
     q, err := channel.QueueDeclare(
         queueName,
@@ -70,6 +71,7 @@ func (ds *DataSourceService) DataUpload(req *DataUploadRequest) *DataUploadRespo
     }
 
     channel := mq.GetMqChannel()
+    defer channel.Close()
     queueName := "data_1"
     q, err := channel.QueueDeclare(
         queueName,
@@ -152,7 +154,7 @@ func (ds *DataSourceService) LabelInit(req *LabelInitRequest) (*LabelInitRespons
         res = LabelInitResponse{}
     )
     labelModel := models.LabelModel{}
-    if err = common.DB.Table(labelModel.TableName()).Where("task_id=? and name=?",req.TaskId, req.LabelName).First(&labelModel).Error; err != nil {
+    if err = common.DB.Table(labelModel.TableName()).Where("task_id=? and name=?", req.TaskId, req.LabelName).First(&labelModel).Error; err != nil {
         if err.Error() != "record not found" {
             common.LogrusLogger.Error(err)
             common.InitKey(ds.Ctx)

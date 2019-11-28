@@ -18,12 +18,10 @@ type BaseModeNormal struct {
     ID int `gorm:"primary_key" json:"id"`
 }
 
-
 type BaseModeName struct {
-    ID int `gorm:"primary_key" json:"id"`
+    ID   int    `gorm:"primary_key" json:"id"`
     Name string `json:"name"`
 }
-
 
 type BaseModelCreate struct {
     ID           int       `gorm:"primary_key" json:"id"`
@@ -61,9 +59,8 @@ func CloseDB() {
     defer DB.Close()
 }
 
-
 type AuthRedis struct {
-    UserId string `json:"user_id"`
+    UserId int    `json:"user_id"`
     Secret string `json:"secret"`
     Key    string `json:"key"`
 }
