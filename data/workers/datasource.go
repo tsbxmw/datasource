@@ -58,7 +58,8 @@ func (ar AReceiver) OnReceive(body []byte) bool {
        BatteryVoltage: req.BatteryVoltage,
        ScreenShot: req.ScreenShot,
     }
-    if err = common.DB.Table(dataModel.TableName()).Create(&dataModel).Error; err != nil {
+    tabelName := dataModel.TableName() + "_" + common.GetDBIndex(dataModel.TaskId, dataModel.LabelId)
+    if err = common.DB.Table(tabelName).Create(&dataModel).Error; err != nil {
        common.LogrusLogger.Error(err)
     }
     return true

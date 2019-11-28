@@ -3,6 +3,7 @@ package common
 import (
     "github.com/gin-gonic/gin"
     "net"
+    "strconv"
 )
 
 func LocalIP() string {
@@ -20,11 +21,16 @@ func LocalIP() string {
     return ""
 }
 
-
 func InitKey(c *gin.Context) {
     if len(c.Keys) == 0 {
         c.Keys = make(map[string]interface{})
         c.Keys["auth"] = &AuthGlobal{}
         c.Keys["code"] = 0
     }
+}
+
+func GetDBIndex(taskId int, labelId int) (index string) {
+    indexInt := (taskId + labelId) % 11
+    index = strconv.Itoa(indexInt)
+    return index
 }
