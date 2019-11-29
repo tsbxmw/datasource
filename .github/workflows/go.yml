@@ -34,4 +34,13 @@ jobs:
         ln -sv /home/runner/work/datasource/datasource/ /home/runner/work/datasource/datasource/vendor/
 
     - name: Build
-      run: GOPATH=$GOPATH:/home/runner/work/datasource/ && go build -o auth1 apps/auth/auth.go
+      run: |
+        GOPATH=$GOPATH:/home/runner/work/datasource/ && go build -o auth1 apps/auth/auth.go
+        GOPATH=$GOPATH:/home/runner/work/datasource/ && go build -o data1 apps/data/data.go
+
+    - name: Test
+      run: |
+        chmod +x auth1
+        chmod +x data1
+        ./auth1 -h
+        ./data1 -h
