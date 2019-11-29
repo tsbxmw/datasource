@@ -1,8 +1,8 @@
 package v1
 
 import (
-	"datasource/auth/service"
-	"datasource/common"
+	"github.com/tsbxmw/datasource/auth/service"
+	"github.com/tsbxmw/datasource/common"
 	"github.com/gin-gonic/gin"
 )
 

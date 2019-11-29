@@ -1,7 +1,7 @@
 package routers
 
 import (
-    v1 "datasource/auth/routers/v1"
+    v1 "github.com/tsbxmw/datasource/auth/routers/v1"
     "github.com/gin-gonic/gin"
 )
 

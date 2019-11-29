@@ -1,8 +1,8 @@
 package main
 
 import (
-    "datasource/common"
-    "datasource/data/transport/http"
+    "github.com/tsbxmw/datasource/common"
+    "github.com/tsbxmw/datasource/data/transport/http"
     "fmt"
     "github.com/sirupsen/logrus"
     "os"

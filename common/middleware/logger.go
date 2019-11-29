@@ -1,7 +1,7 @@
 package middleware
 
 import (
-    "datasource/common"
+    "github.com/tsbxmw/datasource/common"
     "fmt"
     "github.com/gin-gonic/gin"
     rotatelogs "github.com/lestrrat/go-file-rotatelogs"

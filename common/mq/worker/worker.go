@@ -1,8 +1,8 @@
 package worker
 
 import (
-    "datasource/common"
-    "datasource/common/mq"
+    "github.com/tsbxmw/datasource/common"
+    "github.com/tsbxmw/datasource/common/mq"
     "fmt"
     "github.com/smallnest/rpcx/log"
     "github.com/streadway/amqp"

@@ -2,7 +2,7 @@ package middleware
 
 import (
 	"bytes"
-	"datasource/common"
+	"github.com/tsbxmw/datasource/common"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"

@@ -1,7 +1,7 @@
 package service
 
 import (
-    "datasource/common"
+    "github.com/tsbxmw/datasource/common"
     "github.com/gin-gonic/gin"
     "github.com/google/uuid"
     "time"
