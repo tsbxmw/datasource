@@ -25,9 +25,6 @@ jobs:
     - name: copy to gopath
       run: cp -rf ../datasource ../src/
 
-    - name: create vendor dep
-      run: mkdir vendor/datasource
-
     - name: copy to vendor
       run: ln -sv /home/runner/work/datasource/datasource/ /home/runner/work/datasource/datasource/vendor/
 
