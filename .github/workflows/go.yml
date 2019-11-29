@@ -26,4 +26,4 @@ jobs:
       run: cp -rf ../datasource ../src/
 
     - name: Build
-      run: pwd && go build -o auth1 datasource/apps/auth/auth.go
+      run: pwd && go build -o auth1 ./apps/auth/auth.go
