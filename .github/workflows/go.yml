@@ -25,5 +25,8 @@ jobs:
     - name: copy to gopath
       run: cp -rf ../datasource ../src/
 
+    - name: copy to vendor
+      run: cp -rf ../datasource ./vendor/
+
     - name: Build
       run: GOPATH=$GOPATH:/home/runner/work/datasource/ && go build -o auth1 apps/auth/auth.go
