@@ -1,7 +1,7 @@
 package register
 
 import (
-    "datasource/common/consul/discovery"
+    "github.com/tsbxmw/datasource/common/consul/discovery"
     "fmt"
     consulapi "github.com/hashicorp/consul/api"
     "log"

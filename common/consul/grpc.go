@@ -1,9 +1,9 @@
 package consul
 
 import (
-    "datasource/common"
     "fmt"
     "github.com/hashicorp/consul/api"
+    "github.com/tsbxmw/datasource/common"
 )
 
 // Register register service
