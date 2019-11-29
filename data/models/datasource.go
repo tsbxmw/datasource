@@ -1,7 +1,7 @@
 package models
 
 import (
-    "datasource/common"
+    "github.com/tsbxmw/datasource/common"
     _ "github.com/jinzhu/gorm/dialects/mysql"
 )
 

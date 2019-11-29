@@ -1,9 +1,9 @@
 package workers
 
 import (
-    "datasource/common"
-    "datasource/data/models"
-    "datasource/data/service"
+    "github.com/tsbxmw/datasource/common"
+    "github.com/tsbxmw/datasource/data/models"
+    "github.com/tsbxmw/datasource/data/service"
     "encoding/json"
     "time"
 )

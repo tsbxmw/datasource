@@ -1,9 +1,9 @@
 package service
 
 import (
-    "datasource/common"
-    "datasource/common/mq"
-    "datasource/data/models"
+    "github.com/tsbxmw/datasource/common"
+    "github.com/tsbxmw/datasource/common/mq"
+    "github.com/tsbxmw/datasource/data/models"
     "encoding/json"
     "github.com/gin-gonic/gin"
     "github.com/streadway/amqp"

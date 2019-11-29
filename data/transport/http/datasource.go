@@ -1,13 +1,13 @@
 package http
 
 import (
-    "datasource/common"
-    "datasource/common/consul"
-    "datasource/common/handler"
-    "datasource/common/middleware"
-    "datasource/common/mq"
-    "datasource/data/routers"
-    "datasource/data/workers"
+    "github.com/tsbxmw/datasource/common"
+    "github.com/tsbxmw/datasource/common/consul"
+    "github.com/tsbxmw/datasource/common/handler"
+    "github.com/tsbxmw/datasource/common/middleware"
+    "github.com/tsbxmw/datasource/common/mq"
+    "github.com/tsbxmw/datasource/data/routers"
+    "github.com/tsbxmw/datasource/data/workers"
     "fmt"
     "github.com/gin-gonic/gin"
     "strconv"

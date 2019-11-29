@@ -1,8 +1,8 @@
 package routers
 
 import (
-    "datasource/common/middleware"
-    v1 "datasource/data/routers/v1"
+    "github.com/tsbxmw/datasource/common/middleware"
+    v1 "github.com/tsbxmw/datasource/data/routers/v1"
     "github.com/gin-gonic/gin"
 )
 

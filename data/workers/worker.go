@@ -1,8 +1,8 @@
 package workers
 
 import (
-    "datasource/common/mq"
-    "datasource/common/mq/worker"
+    "github.com/tsbxmw/datasource/common/mq"
+    "github.com/tsbxmw/datasource/common/mq/worker"
     "strconv"
     "time"
 )
