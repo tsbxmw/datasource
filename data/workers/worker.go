@@ -16,5 +16,5 @@ func WorkerInit(MqUri string) {
         //mq.RegisterReceiver(AReceiver{Name:"1"})
         go mq.Start()
     }
-    time.Sleep(1*time.Hour)
+    time.Sleep(1 * time.Hour)
 }

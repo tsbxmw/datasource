@@ -29,8 +29,8 @@ func InitKey(c *gin.Context) {
     }
 }
 
-func GetDBIndex(taskId int, labelId int) (index string) {
-    indexInt := (taskId + labelId) % 11
+func GetDBIndex(taskId int) (index string) {
+    indexInt := taskId % 11
     index = strconv.Itoa(indexInt)
     return index
 }
