@@ -29,7 +29,7 @@ jobs:
       run: mkdir vendor/datasource
 
     - name: copy to vendor
-      run: ln -sv /home/runner/work/datasource/datasource/ /home/runner/work/datasource/datasource/vendor/datasource
+      run: ln -sv /home/runner/work/datasource/datasource/ /home/runner/work/datasource/datasource/vendor/
 
     - name: Build
       run: GOPATH=$GOPATH:/home/runner/work/datasource/ && go build -o auth1 apps/auth/auth.go
