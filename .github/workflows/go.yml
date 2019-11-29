@@ -19,10 +19,11 @@ jobs:
     - name: set go path
       run: GOPATH=$GOPATH:/home/runner/work/datasource/
 
+    - name: create src
+      run: mkdir ../src
+
     - name: copy to gopath
-      run: |
-        - mkdir ../src
-        - cp -rf ../datasource ../src/
+      run: cp -rf ../datasource ../src/
 
     - name: Build
       run: go build -o auth1 apps/auth/auth.go
