@@ -13,8 +13,8 @@ jobs:
         go-version: 1.13
       id: go
 
-#    - name: Check out code into the Go module directory
-#      uses: actions/checkout@v1
+    - name: Check out code into the Go module directory
+      uses: actions/checkout@v1
 
     - name: set go path
       run: GOPATH=$GOPATH:/home/runner/work/datasource/
@@ -26,4 +26,4 @@ jobs:
       run: cp -rf ../datasource ../src/
 
     - name: Build
-      run: pwd && go build -o auth1 ./apps/auth/auth.go
+      run: go build -o auth1 apps/auth/auth.go
