@@ -1,8 +1,8 @@
 package models
 
 import (
-    "github.com/tsbxmw/datasource/common"
     _ "github.com/jinzhu/gorm/dialects/mysql"
+    "github.com/tsbxmw/datasource/common"
 )
 
 type DataSourceModel struct {
@@ -54,28 +54,44 @@ func (LabelModel) TableName() string {
 
 type DataUploadModel struct {
     common.BaseModel
-    TaskId          int    `json:"task_id" binding:"required"`
-    LabelId         int    `json:"label_id" binding:"required"`
-    LabelName       string `json:"label_name" binding:"required"`
-    Fps             string `json:"fps"`
-    CpuTotal        string `json:"cpu_total"`
-    CpuApp          string `json:"cpu_app"`
-    MemoryTotal     string `json:"memory_total"`
-    MemoryVirtual   string `json:"memory_virtual"`
-    MemoryReal      string `json:"memory_real"`
-    NetworkSend     string `json:"network_send"`
-    NetworkReceive  string `json:"network_receive"`
-    GpuRendor       string `json:"gpu_rendor"`
-    GpuTiler        string `json:"gpu_tiler"`
-    GpuDevice       string `json:"gpu_device"`
-    CSwitch         string `json:"c_switch"`
-    BatteryCurrent  string `json:"battery_current"`
-    BatteryPower    string `json:"battery_power"`
+    TaskId         int    `json:"task_id" binding:"required"`
+    LabelId        int    `json:"label_id" binding:"required"`
+    LabelName      string `json:"label_name" binding:"required"`
+    Fps            string `json:"fps"`
+    CpuTotal       string `json:"cpu_total"`
+    CpuApp         string `json:"cpu_app"`
+    MemoryTotal    string `json:"memory_total"`
+    MemoryVirtual  string `json:"memory_virtual"`
+    MemoryReal     string `json:"memory_real"`
+    NetworkSend    string `json:"network_send"`
+    NetworkReceive string `json:"network_receive"`
+    GpuRendor      string `json:"gpu_rendor"`
+    GpuTiler       string `json:"gpu_tiler"`
+    GpuDevice      string `json:"gpu_device"`
+    CSwitch        string `json:"c_switch"`
+    BatteryCurrent string `json:"battery_current"`
+    BatteryPower   string `json:"battery_power"`
     BatteryVoltage string `json:"battery_voltage"`
     ScreenShot     string `json:"screen_shot"`
 }
 
-
 func (DataUploadModel) TableName() string {
     return "data"
+}
+
+type AuthModel struct {
+    common.BaseModel
+    UserId    int    `json:"user_id"`
+    AppKey    string `json:"app_key"`
+    AppSecret string `json:"app_secret"`
+    Status    int    `json:"status"`
+}
+
+func (AuthModel) TableName() string {
+    return "auth"
+}
+
+type AppModel struct {
+    common.BaseModeNormal
+
 }

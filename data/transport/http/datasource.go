@@ -33,6 +33,8 @@ func (httpServer HttpServer) Serve() {
     defer mq.MqConn.Close()
     // init exception
     middleware.ExceptionInit(engin)
+    // init header middleware
+    middleware.HeaderMiddlewareInit(engin)
     // init router
     routers.InitRouter(engin)
     // init consul

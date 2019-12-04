@@ -1,9 +1,9 @@
 package v1
 
 import (
+    "github.com/gin-gonic/gin"
     "github.com/tsbxmw/datasource/common"
     "github.com/tsbxmw/datasource/data/service"
-    "github.com/gin-gonic/gin"
 )
 
 func DataInit(c *gin.Context) {
@@ -25,17 +25,16 @@ func DataInit(c *gin.Context) {
     })
 }
 
-
 func DataUpload(c *gin.Context) {
     common.LogrusLogger.Info("Data Upload")
 
     var (
-        ds *service.DataSourceService
+        ds  *service.DataSourceService
         err error
     )
 
     req := service.DataUploadRequest{}
-    if err:=c.ShouldBindJSON(&req); err!=nil{
+    if err := c.ShouldBindJSON(&req); err != nil {
         common.LogrusLogger.Error(err)
         common.InitKey(c)
         c.Keys["code"] = common.HTTP_PARAMS_ERROR
@@ -49,12 +48,11 @@ func DataUpload(c *gin.Context) {
     res := ds.DataUpload(&req)
 
     c.JSON(200, common.Response{
-        Code: 200,
+        Code:    200,
         Message: "success",
-        Data: res,
+        Data:    res,
     })
 }
-
 
 func TaskInit(c *gin.Context) {
     common.LogrusLogger.Info("Task Init")
@@ -65,7 +63,7 @@ func TaskInit(c *gin.Context) {
         err error
     )
     task := service.TaskInitRequest{}
-    if err:=c.ShouldBindJSON(&task); err!=nil{
+    if err := c.ShouldBindJSON(&task); err != nil {
         common.LogrusLogger.Error(err)
         common.InitKey(c)
         c.Keys["code"] = common.HTTP_PARAMS_ERROR
@@ -78,9 +76,9 @@ func TaskInit(c *gin.Context) {
     //}
     authGlobal := c.Keys["auth"].(*common.AuthGlobal)
     task.UserId = authGlobal.UserId
-
+    task.SdkVersion = c.Keys["tcsdk_version"].(string)
     var (
-        ds  *service.DataSourceService
+        ds *service.DataSourceService
     )
     ds, err = service.NewDataSourceMgr(c)
     if err != nil {
@@ -89,9 +87,9 @@ func TaskInit(c *gin.Context) {
     }
     taskRes := ds.TaskInit(&task)
     c.JSON(200, common.Response{
-        Code: 200,
+        Code:    200,
         Message: "success",
-        Data: taskRes,
+        Data:    taskRes,
     })
 }
 
@@ -104,7 +102,7 @@ func LabelInit(c *gin.Context) {
         err error
     )
     label := service.LabelInitRequest{}
-    if err:=c.ShouldBindJSON(&label); err!=nil{
+    if err := c.ShouldBindJSON(&label); err != nil {
         common.LogrusLogger.Error(err)
         common.InitKey(c)
         c.Keys["code"] = common.HTTP_PARAMS_ERROR
@@ -115,9 +113,8 @@ func LabelInit(c *gin.Context) {
     //if taskName == "" {
     //    panic(errors.New("task_name should not be null"))
     //}
-
     var (
-        ds  *service.DataSourceService
+        ds *service.DataSourceService
     )
     ds, err = service.NewDataSourceMgr(c)
     if err != nil {
@@ -127,9 +124,8 @@ func LabelInit(c *gin.Context) {
 
     labelRes := ds.LabelInit(&label)
     c.JSON(200, common.Response{
-        Code: 200,
+        Code:    200,
         Message: "success",
-        Data: labelRes,
+        Data:    labelRes,
     })
 }
-
