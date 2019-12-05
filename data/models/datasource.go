@@ -93,5 +93,4 @@ func (AuthModel) TableName() string {
 
 type AppModel struct {
     common.BaseModeNormal
-
 }

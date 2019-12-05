@@ -31,34 +31,20 @@ func AuthMiddleware() gin.HandlerFunc {
         redisFlag := false
 
         if secretTemp, err := common.RedisGet(redisConn, key); err != nil {
+            common.LogrusLogger.Error(err)
             if err := common.DB.Table("auth").Where("app_key=? and app_secret=?", key, secret).First(&auth).Error; err != nil {
                 c.Keys["code"] = common.REDIS_GET_ERROR
                 panic(err)
-                //c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
-                //    "code":    common.HTTP_AUTH_ERROR,
-                //    "message": err.Error(),
-                //    "data":    []string{},
-                //})
             }
         } else {
             fmt.Println(secretTemp)
             if err = json.Unmarshal([]byte(secretTemp), &authRedis); err != nil {
                 c.Keys["code"] = common.REDIS_GET_ERROR
                 panic(err)
-                //c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
-                //    "code":    common.HTTP_AUTH_ERROR,
-                //    "message": err.Error(),
-                //    "data":    []string{},
-                //})
             }
             if secret != authRedis.Secret {
                 c.Keys["code"] = common.HTTP_AUTH_ERROR
-                panic(err)
-                //c.AbortWithStatusJSON(common.HTTP_AUTH_ERROR, gin.H{
-                //    "code":    common.HTTP_AUTH_ERROR,
-                //    "message": "auth with redis Error",
-                //    "data":    []string{},
-                //})
+                panic(common.NewHttpAuthError())
             }
             redisFlag = true
         }

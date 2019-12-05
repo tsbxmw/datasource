@@ -57,9 +57,6 @@ func DataUpload(c *gin.Context) {
 func TaskInit(c *gin.Context) {
     common.LogrusLogger.Info("Task Init")
     var (
-        //taskName string
-        //sdkVersion string
-        //userId int
         err error
     )
     task := service.TaskInitRequest{}
@@ -69,11 +66,6 @@ func TaskInit(c *gin.Context) {
         c.Keys["code"] = common.HTTP_PARAMS_ERROR
         panic(err)
     }
-    //taskName = c.PostForm("task_name")
-    //sdkVersion = c.PostForm("sdk_version")
-    //if taskName == "" {
-    //    panic(errors.New("task_name should not be null"))
-    //}
     authGlobal := c.Keys["auth"].(*common.AuthGlobal)
     task.UserId = authGlobal.UserId
     task.SdkVersion = c.Keys["tcsdk_version"].(string)
@@ -91,6 +83,16 @@ func TaskInit(c *gin.Context) {
         Message: "success",
         Data:    taskRes,
     })
+}
+
+func TaskGet(c *gin.Context) {
+    common.LogrusLogger.Info("Task Get")
+
+}
+
+func TaskGetList(c *gin.Context) {
+    common.LogrusLogger.Info("Task Get List")
+
 }
 
 func LabelInit(c *gin.Context) {

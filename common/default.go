@@ -16,3 +16,7 @@ const (
     MYSQL_CREATE_ERROR = 2002
     MYSQL_UPDATE_ERROR = 2003
 )
+
+const (
+    HTTP_AUTH_ERROR_MSG = "Auth Error"
+)
