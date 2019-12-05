@@ -42,5 +42,5 @@ jobs:
       run: |
         chmod +x auth1
         chmod +x data1
-        ./auth1 -h
-        ./data1 -h
+        ./auth1 --config=./auth/config/dev-local.json httpserver
+        ./data1 --config=./data/config/dev-local.json httpserver
