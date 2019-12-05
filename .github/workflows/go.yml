@@ -40,6 +40,7 @@ jobs:
 
     - name: Test
       run: |
+        mkdir log
         chmod +x auth1
         chmod +x data1
         ./auth1 --config=./auth/config/dev-local.json httpserver
