@@ -1,5 +1,5 @@
 {
-  "address": "122.51.145.198",
+  "address": "172.22.96.83",
   "consul_addr": "http://122.51.145.198",
   "consul_port": 8500,
   "db_uri": "root:mengwei@(122.51.145.198:3306)/datasource?parseTime=true&loc=Local",
@@ -11,8 +11,7 @@
   "retry_timeout": 500,
   "service_name": "auth_v1",
   "redis_host": "122.51.145.198",
-  "redis_password": "",
+  "redis_password": "mengwei",
   "redis_port": "6379",
-  "redis_db": 1,
-  "mq_uri": "amqp://mengwei:mengwei@122.51.145.198:5672/"
+  "redis_db": 1
 }
