@@ -14,11 +14,11 @@ type BaseModel struct {
     ModifiedTime time.Time `json:"modified_time"`
 }
 
-type BaseModeNormal struct {
+type BaseModelNormal struct {
     ID int `gorm:"primary_key" json:"id"`
 }
 
-type BaseModeName struct {
+type BaseModelName struct {
     ID   int    `gorm:"primary_key" json:"id"`
     Name string `json:"name"`
 }
