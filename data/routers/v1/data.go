@@ -110,11 +110,6 @@ func LabelInit(c *gin.Context) {
         c.Keys["code"] = common.HTTP_PARAMS_ERROR
         panic(err)
     }
-    //taskName = c.PostForm("task_name")
-    //sdkVersion = c.PostForm("sdk_version")
-    //if taskName == "" {
-    //    panic(errors.New("task_name should not be null"))
-    //}
     var (
         ds *service.DataSourceService
     )

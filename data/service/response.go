@@ -6,6 +6,14 @@ type (
         TaskName string `json:"task_name"`
     }
 
+    TaskGetListResponse struct {
+
+    }
+
+)
+
+type (
+
     LabelInitResponse struct {
         LabelId int `json:"label_id"`
         LabelName string `json:"label_name"`

@@ -1,8 +1,8 @@
 {
   "address": "172.22.96.83",
-  "consul_addr": "http://122.51.145.198",
+  "consul_addr": "http://172.23.152.46",
   "consul_port": 8500,
-  "db_uri": "root:mengwei@(tcloud.tsbx.com:3306)/datasource?parseTime=true&loc=Local",
+  "db_uri": "root:mengwei@(tcloud-api.tsbx.com:3306)/datasource?parseTime=true&loc=Local",
   "jaeger_addr": "tcloud-api.tsbx.com:5775",
   "log_file": "log/auth.log",
   "port": 9040,
@@ -13,5 +13,6 @@
   "redis_host": "tcloud.tsbx.com",
   "redis_password": "",
   "redis_port": "6379",
-  "redis_db": 1
+  "redis_db": 1,
+  "mq_uri": "amqp://mengwei:mengwei@tcloud.tsbx.com:5672/"
 }

@@ -1,5 +1,7 @@
 package service
 
+import "github.com/tsbxmw/datasource/common"
+
 type (
     TaskInitRequest struct {
         UserId     int    `json:"user_id"`
@@ -7,8 +9,9 @@ type (
         SdkVersion string `json:"sdk_version"`
     }
 
-    TaskGetList struct {
-
+    TaskGetListRequest struct {
+        common.PageBaseRequst
+        UserId int `json:"user_id"`
     }
 )
 

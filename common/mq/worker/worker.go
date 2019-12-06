@@ -173,9 +173,14 @@ func (rmq *RabbitMQ) listen(receiver Receiver) {
         // 比如网络问题导致的数据库连接失败，redis连接失败等等这种
         // 通过重试可以成功的操作，那么这个时候是需要重试的
         // 直到数据处理成功后再返回，然后才会回复RabbitMQ ack
+        retryTimes := 0
         for !receiver.OnReceive(msg.Body) {
             log.Warnf("receiver 数据处理失败，将要重试")
-            //time.Sleep(1 * time.Second)
+            time.Sleep(1 * time.Second)
+            if retryTimes > 10{
+                panic(common.NewMySqlCreateError())
+            }
+            retryTimes ++
         }
         common.LogrusLogger.Info("Receive msg ok!")
         // 确认收到本条消息, multiple必须为false

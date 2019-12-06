@@ -61,6 +61,7 @@ func (ar AReceiver) OnReceive(body []byte) bool {
     tabelName := dataModel.TableName() + "_" + common.GetDBIndex(dataModel.TaskId)
     if err = common.DB.Table(tabelName).Create(&dataModel).Error; err != nil {
        common.LogrusLogger.Error(err)
+       return false
     }
     return true
 }

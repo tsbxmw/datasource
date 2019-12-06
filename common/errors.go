@@ -5,6 +5,11 @@ type (
         Code    int
         Message string
     }
+
+    MysqlCreateError struct {
+        Code    int
+        Message string
+    }
 )
 
 func NewHttpAuthError() error {
@@ -13,4 +18,12 @@ func NewHttpAuthError() error {
 
 func (hae HttpAuthError) Error() string {
     return hae.Message
+}
+
+func NewMySqlCreateError() error {
+    return MysqlCreateError{Code: MYSQL_CREATE_ERROR, Message: MYSQL_CREATE_ERROR_MSG}
+}
+
+func (mce MysqlCreateError) Error() string {
+    return mce.Message
 }

@@ -35,6 +35,7 @@ func (httpServer HttpServer) Serve() {
     middleware.ExceptionInit(engin)
     // init header middleware
     middleware.HeaderMiddlewareInit(engin)
+    middleware.ResponseMiddlewareInit(engin)
     // init router
     routers.InitRouter(engin)
     // init consul

@@ -93,4 +93,8 @@ func (AuthModel) TableName() string {
 
 type AppModel struct {
     common.BaseModeNormal
+    Name string `json:"name"`
+    Version string `json:"version"`
+    Package string `json:"package"`
 }
+
