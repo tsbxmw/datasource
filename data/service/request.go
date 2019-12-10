@@ -45,3 +45,31 @@ type (
         ScreenShot     string `json:"screen_shot"`
     }
 )
+
+type (
+    DeviceInitRequest struct {
+        Name         string `json:"name"`
+        Cpu          string `json:"cpu"`
+        Gpu          string `json:"gpu"`
+        Type         string `json:"type"`
+        Os           string `json:"os"`
+        CpuType      string `json:"cpu_type"`
+        CpuArch      string `json:"cpu_arch"`
+        CpuCoreNumber      int    `json:"cpu_core_number"`
+        CpuFrequency string `json:"cpu_frequency"`
+        Ram          string `json:"ram"`
+        Rom          string `json:"rom"`
+        TaskId       int    `json:"task_id" binding:"required"`
+    }
+)
+
+type (
+    AppInitRequest struct {
+        Name      string `json:"name"`
+        Version   string `json:"version"`
+        Package   string `json:"package"`
+        Extention string `json:"extention"`
+        Remark    string `json:"remark"`
+        TaskId    int    `json:"task_id" binding:"required"`
+    }
+)

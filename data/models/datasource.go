@@ -19,11 +19,9 @@ func (DataSourceModel) TableName() string {
 type TaskModel struct {
     common.BaseModel
     Name       string `json:"name"`
-    DeviceId   int    `json:"device_id"`
     UserId     int    `json:"user_id"`
     TimeUse    int    `json:"time_use"`
     SdkVersion string `json:"sdk_version"`
-    AppId      int    `json:"app_id"`
     Remark     string `json:"remark"`
 }
 
@@ -33,9 +31,9 @@ func (TaskModel) TableName() string {
 
 type TaskUserModel struct {
     common.BaseModel
-    UserId int    `json:"user_id"`
-    TaskId int    `json:"task_id"`
-    Remark string `json:"remark"`
+    UserId   int    `json:"user_id"`
+    TaskId   int    `json:"task_id"`
+    Remark   string `json:"remark"`
 }
 
 func (TaskUserModel) TableName() string {
@@ -98,6 +96,7 @@ type AppModel struct {
     Package   string `json:"package"`
     Extention string `json:"extention"`
     Remark    string `json:"remark"`
+    TaskId    int    `json:"task_id"`
 }
 
 func (AppModel) TableName() string {
@@ -116,6 +115,8 @@ type DeviceModel struct {
     CpuFrequency  string `json:"cpu_frequency"`
     Ram           string `json:"ram"`
     Rom           string `json:"rom"`
+    Type          string `json:"type"`
+    TaskId        int    `json:"task_id"`
 }
 
 func (DeviceModel) TableName() string {

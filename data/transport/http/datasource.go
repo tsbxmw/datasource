@@ -1,17 +1,15 @@
 package http
 
 import (
+    "fmt"
+    "github.com/gin-gonic/gin"
     "github.com/tsbxmw/datasource/common"
-    "github.com/tsbxmw/datasource/common/consul"
     "github.com/tsbxmw/datasource/common/handler"
     "github.com/tsbxmw/datasource/common/middleware"
     "github.com/tsbxmw/datasource/common/mq"
     "github.com/tsbxmw/datasource/data/routers"
     "github.com/tsbxmw/datasource/data/workers"
-    "fmt"
-    "github.com/gin-gonic/gin"
     "strconv"
-    "time"
 )
 
 type (
@@ -39,18 +37,18 @@ func (httpServer HttpServer) Serve() {
     // init router
     routers.InitRouter(engin)
     // init consul
-    consulRegister := consul.ConsulRegister{
-        Address:                        httpServer.Address,
-        Port:                           httpServer.Port,
-        ConsulAddress:                  httpServer.ConsulAddr,
-        ConsulPort:                     httpServer.ConsulPort,
-        Service:                        httpServer.SvcName,
-        Tag:                            []string{httpServer.SvcName},
-        DeregisterCriticalServiceAfter: time.Second * 10,
-        Interval:                       time.Second * 5,
-    }
-
-    consulRegister.RegisterHTTP()
+    //consulRegister := consul.ConsulRegister{
+    //    Address:                        httpServer.Address,
+    //    Port:                           httpServer.Port,
+    //    ConsulAddress:                  httpServer.ConsulAddr,
+    //    ConsulPort:                     httpServer.ConsulPort,
+    //    Service:                        httpServer.SvcName,
+    //    Tag:                            []string{httpServer.SvcName},
+    //    DeregisterCriticalServiceAfter: time.Second * 10,
+    //    Interval:                       time.Second * 5,
+    //}
+    //
+    //consulRegister.RegisterHTTP()
 
     if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
         panic(err)
