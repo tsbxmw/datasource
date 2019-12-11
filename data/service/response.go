@@ -1,6 +1,7 @@
 package service
 
 import (
+    "github.com/tsbxmw/datasource/data/models"
     "time"
 )
 
@@ -24,6 +25,14 @@ type (
         Duration    string    `json:"duration"`
         SDKVersion  string    `json:"sdk_version"`
     }
+
+    TaskGetDetailResponse struct {
+        TaskSummary models.TaskSummaryModel `json:"summary"`
+        TaskDetail  TaskGetListResponse     `json:"task_detail"`
+    }
+
+    TaskGetReportResponse struct {
+    }
 )
 
 type (
@@ -39,7 +48,7 @@ type (
 type (
     DeviceInitResponse struct {
         DeviceName string `json:"device_name"`
-        DeviceId int `json:"device_id"`
+        DeviceId   int    `json:"device_id"`
     }
 )
 

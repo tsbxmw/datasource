@@ -1,8 +1,6 @@
 package consul
 
-import (
-    "time"
-)
+import "time"
 
 // ConsulRegister consul service register
 type ConsulRegister struct {

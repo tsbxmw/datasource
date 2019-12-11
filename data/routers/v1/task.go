@@ -30,8 +30,8 @@ func TaskInit(c *gin.Context) {
         panic(err)
     }
     taskRes := ds.TaskInit(&task)
-    c.JSON(200, common.Response{
-        Code:    200,
+    c.JSON(common.HTTP_STATUS_OK, common.Response{
+        Code:    common.HTTP_STATUS_OK,
         Message: "success",
         Data:    taskRes,
     })
@@ -58,9 +58,40 @@ func TaskGetList(c *gin.Context) {
         panic(err)
     }
     taskRes := ds.TaskGetList(&taskReq)
-    c.JSON(200, common.Response{
-        Code: 200,
+    c.JSON(common.HTTP_STATUS_OK, common.Response{
+        Code:    common.HTTP_STATUS_OK,
         Message: "success",
-        Data: taskRes,
+        Data:    taskRes,
     })
+}
+
+func TaskGetReport(c *gin.Context) {
+    common.LogrusLogger.Info("Task Get Report")
+}
+
+func TaskGetDetail(c *gin.Context) {
+    common.LogrusLogger.Info("Task Get Detail")
+    var (
+       err error
+    )
+    taskDetailReq := service.TaskGetDetailRequest{}
+    if err = c.ShouldBindJSON(&taskDetailReq); err != nil {
+        common.LogrusLogger.Error(err)
+        common.InitKey(c)
+        c.Keys["code"] = common.HTTP_PARAMS_ERROR
+        panic(err)
+    }
+
+    var ds *service.DataSourceService
+
+    ds, err = service.NewDataSourceMgr(c)
+    if err != nil{
+        common.LogrusLogger.Error(err)
+        panic(err)
+    }
+
+    res := ds.TaskGetDetail(&taskDetailReq)
+
+    c.JSON(common.HTTP_STATUS_OK, &res)
+
 }

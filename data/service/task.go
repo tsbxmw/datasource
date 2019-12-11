@@ -101,3 +101,12 @@ func (ds *DataSourceService) TaskGetList(req *TaskGetListRequest) *[]TaskGetList
     }
     return &res
 }
+
+func (ds *DataSourceService) TaskGetDetail(req *TaskGetDetailRequest) *TaskGetDetailResponse {
+    var (
+        err error
+        res = TaskGetDetailResponse{}
+    )
+
+    return &res
+}

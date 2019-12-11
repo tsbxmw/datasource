@@ -13,6 +13,15 @@ type (
         common.PageBaseRequst
         UserId int `json:"user_id"`
     }
+
+    TaskGetDetailRequest struct {
+        TaskId int `json:"task_id"`
+    }
+
+    TaskGetReportRequest struct {
+        TaskId int `json:"task_id"`
+    }
+
 )
 
 type (

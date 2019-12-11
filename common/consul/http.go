@@ -10,7 +10,7 @@ import (
     "time"
 )
 
-func (r *ConsulRegister) RegisterHTTP() {
+func (r *ConsulRegister) RegisterHTTP() (*consulapi.Client){
     rand.Seed(time.Now().UTC().UnixNano())
 
     consulConfig := consulapi.DefaultConfig()
@@ -25,8 +25,8 @@ func (r *ConsulRegister) RegisterHTTP() {
 
     check := consulapi.AgentServiceCheck{
         HTTP:     "http://" + r.Address + ":" + portStr + "/v1/health",
-        Interval: "10s",
-        Timeout:  "1s",
+        Interval: r.Interval.String(),
+        Timeout:  "5s",
         Notes:    "Basic health checks",
     }
 
@@ -44,5 +44,5 @@ func (r *ConsulRegister) RegisterHTTP() {
         panic(err)
     }
 
-    return
+    return consulClient
 }

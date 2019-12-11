@@ -11,8 +11,9 @@ func (ds *DataSourceService) AppInit(req *AppInitRequest) *AppInitResponse {
         err error
         res = AppInitResponse{}
     )
+    common.LogrusLogger.Info(req.Name, req.Version, req.Package)
     app := models.AppModel{}
-    if err = common.DB.Table(app.TableName()).Where("name=? and version=? and package=?", req.Name, req.Version, req.Package).First(&app).Error; err != nil {
+    if err = common.DB.Table(app.TableName()).Where("name=? and version=? and package=? and task_id=?", req.Name, req.Version, req.Package, req.TaskId).First(&app).Error; err != nil {
         if err.Error() != "record not found" {
             common.LogrusLogger.Error(err)
             common.InitKey(ds.Ctx)
@@ -20,6 +21,7 @@ func (ds *DataSourceService) AppInit(req *AppInitRequest) *AppInitResponse {
             panic(err)
         }
     }
+    common.LogrusLogger.Info(app.TaskId)
     if app.ID > 0 {
         res.AppId = app.ID
         res.AppName = app.Name
@@ -29,6 +31,7 @@ func (ds *DataSourceService) AppInit(req *AppInitRequest) *AppInitResponse {
         app.Extention = req.Extention
         app.Remark = req.Remark
         app.CreationTime = time.Now()
+        app.Package = req.Package
         app.TaskId = req.TaskId
         if err = common.DB.Table(app.TableName()).Create(&app).Error; err != nil {
             common.LogrusLogger.Error(err)
@@ -39,3 +42,6 @@ func (ds *DataSourceService) AppInit(req *AppInitRequest) *AppInitResponse {
     }
     return &res
 }
+
+
+
