@@ -56,6 +56,53 @@ func (ds *DataSourceService) TaskInit(req *TaskInitRequest) *TaskInitResponse {
     return &res
 }
 
+func (ds *DataSourceService) TaskGet(taskId int) *TaskGetListResponse {
+
+    task := models.TaskModel{}
+    taskInfo := TaskGetListResponse{}
+
+    if err := common.DB.Table(task.TableName()).Where("id=?", taskId).First(&task).Error; err != nil {
+        if err.Error() != "record not found" {
+            common.LogrusLogger.Error(err)
+            panic(err)
+        } else {
+            return &taskInfo
+        }
+    }
+
+    deviceInfo := models.DeviceModel{}
+    appInfo := models.AppModel{}
+
+    if err := common.DB.Table(deviceInfo.TableName()).Where("task_id=?", taskId).First(&deviceInfo).Error; err != nil {
+        if err.Error() != "record not found" {
+            common.LogrusLogger.Error(err)
+            panic(err)
+        }
+    }
+
+    if err := common.DB.Table(appInfo.TableName()).Where("task_id=?", taskId).First(&appInfo).Error; err != nil {
+        if err.Error() != "record not found" {
+            common.LogrusLogger.Error(err)
+            panic(err)
+        }
+    }
+
+    taskInfo = TaskGetListResponse{
+        Name:       task.Name,
+        DeviceName: deviceInfo.Name,
+        AppName:    appInfo.Name,
+        AppPackage: appInfo.Package,
+        AppPicture: appInfo.Extention,
+        AppVersion: appInfo.Version,
+        CreatorId:  task.UserId,
+        UploadTime: task.CreationTime,
+        SDKVersion: task.SdkVersion,
+
+    }
+
+    return &taskInfo
+}
+
 func (ds *DataSourceService) TaskGetList(req *TaskGetListRequest) *[]TaskGetListResponse {
     var (
         err error
@@ -104,8 +151,19 @@ func (ds *DataSourceService) TaskGetList(req *TaskGetListRequest) *[]TaskGetList
 
 func (ds *DataSourceService) TaskGetDetail(req *TaskGetDetailRequest) *TaskGetDetailResponse {
     var (
-        res = TaskGetDetailResponse{}
+        res = TaskGetDetailResponse{
+            TaskSummary: models.TaskSummaryModel{},
+            TaskDetail:  TaskGetListResponse{},
+        }
     )
+    if err := common.DB.Table(res.TaskSummary.TableName()).Where("task_id=?", req.TaskId).First(&res.TaskSummary).Error; err != nil {
+        if err.Error() != "record not found" {
+            common.LogrusLogger.Error(err)
+            panic(err)
+        }
+    }
+
+    res.TaskDetail = *ds.TaskGet(req.TaskId)
 
     return &res
 }
