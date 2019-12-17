@@ -28,6 +28,10 @@ type (
 		TaskId    int    `json:"task_id" binding:"required"`
 		LabelName string `json:"label_name"`
 	}
+
+	LabelGetDetailRequest struct {
+		LabelId  int `form:"label_id"`
+	}
 )
 
 type (

@@ -37,3 +37,32 @@ func LabelInit(c *gin.Context) {
         Data:    labelRes,
     })
 }
+
+func LabelGetDetailById(c *gin.Context) {
+    common.LogrusLogger.Info("Label Get Detail")
+    var (
+        err error
+    )
+    labelReq := service.LabelGetDetailRequest{}
+    if err := c.ShouldBindJSON(&labelReq); err != nil {
+        common.LogrusLogger.Error(err)
+        common.InitKey(c)
+        c.Keys["code"] = common.HTTP_PARAMS_ERROR
+        panic(err)
+    }
+    var (
+        ds *service.DataSourceService
+    )
+    ds, err = service.NewDataSourceMgr(c)
+    if err != nil {
+        common.LogrusLogger.Error(err)
+        panic(err)
+    }
+
+    labelRes := ds.LabelGetDetail(&labelReq)
+    c.JSON(200, common.Response{
+        Code:    200,
+        Message: "success",
+        Data:    labelRes,
+    })
+}

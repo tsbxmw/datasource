@@ -6,6 +6,11 @@ import (
 )
 
 type (
+	DataUploadResponse struct {
+	}
+)
+
+type (
 	TaskInitResponse struct {
 		TaskId   int    `json:"task_id"`
 		TaskName string `json:"task_name"`
@@ -44,7 +49,9 @@ type (
 		LabelName string `json:"label_name"`
 	}
 
-	DataUploadResponse struct {
+	LabelGetDetailResponse struct {
+		LabelSummary models.LabelSummaryModel `json:"label_summary"`
+
 	}
 )
 

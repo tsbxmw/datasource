@@ -67,6 +67,32 @@ func TaskGetList(c *gin.Context) {
 
 func TaskGetReport(c *gin.Context) {
 	common.LogrusLogger.Info("Task Get Report")
+	var (
+		err error
+	)
+	taskReportReq := service.TaskGetReportRequest{}
+
+	if err = c.ShouldBind(&taskReportReq); err != nil {
+		common.LogrusLogger.Error(err)
+		common.InitKey(c)
+		c.Keys["code"] = common.HTTP_PARAMS_ERROR
+		panic(err)
+	}
+	var ds *service.DataSourceService
+
+	ds, err = service.NewDataSourceMgr(c)
+	if err != nil {
+		common.LogrusLogger.Error(err)
+		panic(err)
+	}
+
+	res := ds.TaskGetReort(&taskReportReq)
+
+	c.JSON(common.HTTP_STATUS_OK, common.Response{
+		Code:    common.HTTP_STATUS_OK,
+		Message: "success",
+		Data:    &res,
+	})
 }
 
 func TaskGetDetail(c *gin.Context) {
@@ -96,7 +122,5 @@ func TaskGetDetail(c *gin.Context) {
 		Code:    common.HTTP_STATUS_OK,
 		Message: "success",
 		Data:    &res,
-	},
-	)
-
+	})
 }

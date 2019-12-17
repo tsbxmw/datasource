@@ -25,6 +25,7 @@ func InitRouter(e *gin.Engine) {
 		//label group
 		//GroupV1.POST("/data/task/")
 		GroupV1.POST("/data/label", v1.LabelInit)
+		GroupV1.GET("/data/label", v1.LabelGetDetailById)
 	}
 
 	GroupHealth := e.Group("/v1/health")
