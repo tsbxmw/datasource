@@ -37,9 +37,11 @@ type (
 	TaskGetDetailResponse struct {
 		TaskSummary models.TaskSummaryModel `json:"summary"`
 		TaskDetail  TaskGetListResponse     `json:"task_detail"`
+		LabelInfos  LabelGetListResponse	`json:"label_infos"`
 	}
 
 	TaskGetReportResponse struct {
+
 	}
 )
 
@@ -49,9 +51,14 @@ type (
 		LabelName string `json:"label_name"`
 	}
 
-	LabelGetDetailResponse struct {
-		LabelSummary models.LabelSummaryModel `json:"label_summary"`
 
+	LabelResponse struct {
+		Summary models.LabelSummaryModel `json:"summary"`
+		Info    models.LabelModel        `json:"info"`
+	}
+
+	LabelGetListResponse struct {
+		Label []LabelResponse `json:"label"`
 	}
 )
 

@@ -115,35 +115,8 @@ func (ds *DataSourceService) TaskGetList(req *TaskGetListRequest) *[]TaskGetList
 	for _, value := range taskList {
 		temp, _ := json.Marshal(value)
 		common.LogrusLogger.Info(string(temp))
-		deviceInfo := models.DeviceModel{}
-		appInfo := models.AppModel{}
-
-		if err = common.DB.Table(deviceInfo.TableName()).Where("task_id=?", value.ID).First(&deviceInfo).Error; err != nil {
-			if err.Error() != "record not found" {
-				common.LogrusLogger.Error(err)
-				panic(err)
-			}
-		}
-
-		if err = common.DB.Table(appInfo.TableName()).Where("task_id=?", value.ID).First(&appInfo).Error; err != nil {
-			if err.Error() != "record not found" {
-				common.LogrusLogger.Error(err)
-				panic(err)
-			}
-		}
-
-		res_one := TaskGetListResponse{
-			Name:       value.Name,
-			DeviceName: deviceInfo.Name,
-			AppName:    appInfo.Name,
-			AppPackage: appInfo.Package,
-			AppPicture: appInfo.Extention,
-			AppVersion: appInfo.Version,
-			CreatorId:  value.UserId,
-			UploadTime: value.CreationTime,
-			SDKVersion: value.SdkVersion,
-		}
-		res = append(res, res_one)
+		resOne := ds.TaskGet(value.ID)
+		res = append(res, *resOne)
 	}
 	return &res
 }
@@ -153,6 +126,7 @@ func (ds *DataSourceService) TaskGetDetail(req *TaskGetDetailRequest) *TaskGetDe
 		res = TaskGetDetailResponse{
 			TaskSummary: models.TaskSummaryModel{},
 			TaskDetail:  TaskGetListResponse{},
+			LabelInfos:  LabelGetListResponse{},
 		}
 	)
 	if err := common.DB.Table(res.TaskSummary.TableName()).Where("task_id=?", req.TaskId).First(&res.TaskSummary).Error; err != nil {
@@ -163,6 +137,7 @@ func (ds *DataSourceService) TaskGetDetail(req *TaskGetDetailRequest) *TaskGetDe
 	}
 
 	res.TaskDetail = *ds.TaskGet(req.TaskId)
+	res.LabelInfos = *ds.LabelGetListByTaskId(&LabelGetListByTaskIdRequest{TaskId: req.TaskId})
 
 	return &res
 }

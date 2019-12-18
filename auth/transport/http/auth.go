@@ -43,8 +43,8 @@ func (httpServer HttpServer) Serve() {
         ConsulPort:                     httpServer.ConsulPort,
         Service:                        httpServer.SvcName,
         Tag:                            []string{httpServer.SvcName},
-        DeregisterCriticalServiceAfter: time.Second * 10,
-        Interval:                       time.Second * 5,
+        DeregisterCriticalServiceAfter: time.Second * 60,
+        Interval:                       time.Second * 60,
     }
 
     consulRegister.RegisterHTTP()

@@ -21,6 +21,7 @@ func InitRouter(e *gin.Engine) {
 		GroupV1.GET("/data/task/app", v1.AppGetById)
 		GroupV1.POST("/data/task/device", v1.DeviceInit)
 		GroupV1.GET("/data/task/device", v1.DeviceGetById)
+		GroupV1.GET("/data/task/label", v1.LabelGetByTaskId)
 
 		//label group
 		//GroupV1.POST("/data/task/")

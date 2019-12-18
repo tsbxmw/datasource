@@ -19,6 +19,7 @@ const (
 
 const (
     HTTP_AUTH_ERROR_MSG = "Auth Error"
-
+    HTTP_MESSAGE_OK = "success"
     MYSQL_CREATE_ERROR_MSG = "Mysql Create Error"
+
 )

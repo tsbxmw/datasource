@@ -30,7 +30,11 @@ type (
 	}
 
 	LabelGetDetailRequest struct {
-		LabelId  int `form:"label_id"`
+		LabelId int `form:"label_id"`
+	}
+
+	LabelGetListByTaskIdRequest struct {
+		TaskId int `form:"task_id" binding:"required"`
 	}
 )
 
@@ -76,9 +80,8 @@ type (
 
 	DeviceGetByIdRequest struct {
 		DeviceId int `form:"device_id" binding:"required"`
-		TaskId int `form:"task_id" binding:"required"`
+		TaskId   int `form:"task_id" binding:"required"`
 	}
-
 )
 
 type (
