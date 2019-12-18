@@ -10,16 +10,16 @@ type (
 	}
 
 	TaskGetListRequest struct {
-		common.PageBaseRequst
-		UserId int `json:"user_id"`
+		common.PageFormBaseRequest
+		UserId int `form:"user_id" binding:"required"`
 	}
 
 	TaskGetDetailRequest struct {
-		TaskId int `json:"task_id"`
+		TaskId int `form:"task_id"`
 	}
 
 	TaskGetReportRequest struct {
-		TaskId int `json:"task_id"`
+		TaskId int `form:"task_id"`
 	}
 )
 
@@ -43,22 +43,22 @@ type (
 		TaskId         int    `json:"task_id" binding:"required"`
 		LabelId        int    `json:"label_id" binding:"required"`
 		LabelName      string `json:"label_name" binding:"required"`
-		Fps            string `json:"fps"`
-		CpuTotal       string `json:"cpu_total"`
-		CpuApp         string `json:"cpu_app"`
-		MemoryTotal    string `json:"memory_total"`
-		MemoryVirtual  string `json:"memory_virtual"`
-		MemoryReal     string `json:"memory_real"`
-		NetworkSend    string `json:"network_send"`
-		NetworkReceive string `json:"network_receive"`
-		GpuRendor      string `json:"gpu_rendor"`
-		GpuTiler       string `json:"gpu_tiler"`
-		GpuDevice      string `json:"gpu_device"`
-		CSwitch        string `json:"c_switch"`
-		BatteryCurrent string `json:"battery_current"`
-		BatteryPower   string `json:"battery_power"`
-		BatteryVoltage string `json:"battery_voltage"`
-		ScreenShot     string `json:"screen_shot"`
+		Fps            float32 `json:"fps"`
+		CpuTotal       float32 `json:"cpu_total"`
+		CpuApp         float32 `json:"cpu_app"`
+		MemoryTotal    float32 `json:"memory_total"`
+		MemoryVirtual  float32 `json:"memory_virtual"`
+		MemoryReal     float32 `json:"memory_real"`
+		NetworkSend    float32 `json:"network_send"`
+		NetworkReceive float32 `json:"network_receive"`
+		GpuRendor      float32 `json:"gpu_rendor"`
+		GpuTiler       float32 `json:"gpu_tiler"`
+		GpuDevice      float32 `json:"gpu_device"`
+		CSwitch        float32 `json:"c_switch"`
+		BatteryCurrent float32 `json:"battery_current"`
+		BatteryPower   float32 `json:"battery_power"`
+		BatteryVoltage float32 `json:"battery_voltage"`
+		ScreenShot     float32 `json:"screen_shot"`
 	}
 )
 

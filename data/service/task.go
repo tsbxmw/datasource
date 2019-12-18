@@ -105,13 +105,14 @@ func (ds *DataSourceService) TaskGet(taskId int) *TaskGetListResponse {
 func (ds *DataSourceService) TaskGetList(req *TaskGetListRequest) *[]TaskGetListResponse {
 	var (
 		err error
-		res = []TaskGetListResponse{}
+		res = make([]TaskGetListResponse, 0)
 	)
-	taskList := []models.TaskModel{}
+	taskList := make([]models.TaskModel, 0)
 	if err = common.DB.Table(models.TaskModel{}.TableName()).Where("user_id=?", req.UserId).Limit(req.PageSize).Offset((req.PageIndex - 1) * req.PageSize).Find(&taskList).Error; err != nil {
 		common.LogrusLogger.Error(err)
 		panic(err)
 	}
+	common.LogrusLogger.Debug(req)
 	for _, value := range taskList {
 		temp, _ := json.Marshal(value)
 		common.LogrusLogger.Info(string(temp))

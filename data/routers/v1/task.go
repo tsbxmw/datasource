@@ -30,7 +30,7 @@ func TaskInit(c *gin.Context) {
 		panic(err)
 	}
 	taskRes := ds.TaskInit(&task)
-	c.JSON(common.HTTP_STATUS_OK, common.Response{
+	c.JSON(common.HTTP_RESPONSE_OK, common.Response{
 		Code:    common.HTTP_STATUS_OK,
 		Message: "success",
 		Data:    taskRes,
@@ -43,7 +43,7 @@ func TaskGetList(c *gin.Context) {
 		err error
 	)
 	taskReq := service.TaskGetListRequest{}
-	if err = c.ShouldBindJSON(&taskReq); err != nil {
+	if err = c.ShouldBind(&taskReq); err != nil {
 		common.LogrusLogger.Error(err)
 		common.InitKey(c)
 		c.Keys["code"] = common.HTTP_PARAMS_ERROR
@@ -58,7 +58,7 @@ func TaskGetList(c *gin.Context) {
 		panic(err)
 	}
 	taskRes := ds.TaskGetList(&taskReq)
-	c.JSON(common.HTTP_STATUS_OK, common.Response{
+	c.JSON(common.HTTP_RESPONSE_OK, common.Response{
 		Code:    common.HTTP_STATUS_OK,
 		Message: "success",
 		Data:    taskRes,
@@ -88,7 +88,7 @@ func TaskGetReport(c *gin.Context) {
 
 	res := ds.TaskGetReort(&taskReportReq)
 
-	c.JSON(common.HTTP_STATUS_OK, common.Response{
+	c.JSON(common.HTTP_RESPONSE_OK, common.Response{
 		Code:    common.HTTP_STATUS_OK,
 		Message: "success",
 		Data:    &res,
@@ -101,7 +101,7 @@ func TaskGetDetail(c *gin.Context) {
 		err error
 	)
 	taskDetailReq := service.TaskGetDetailRequest{}
-	if err = c.ShouldBindJSON(&taskDetailReq); err != nil {
+	if err = c.ShouldBind(&taskDetailReq); err != nil {
 		common.LogrusLogger.Error(err)
 		common.InitKey(c)
 		c.Keys["code"] = common.HTTP_PARAMS_ERROR
@@ -118,7 +118,7 @@ func TaskGetDetail(c *gin.Context) {
 
 	res := ds.TaskGetDetail(&taskDetailReq)
 
-	c.JSON(common.HTTP_STATUS_OK, common.Response{
+	c.JSON(common.HTTP_RESPONSE_OK, common.Response{
 		Code:    common.HTTP_STATUS_OK,
 		Message: "success",
 		Data:    &res,

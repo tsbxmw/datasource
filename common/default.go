@@ -15,6 +15,8 @@ const (
     MYSQL_QUERY_ERROR  = 2001
     MYSQL_CREATE_ERROR = 2002
     MYSQL_UPDATE_ERROR = 2003
+
+    HTTP_RESPONSE_OK = 0
 )
 
 const (

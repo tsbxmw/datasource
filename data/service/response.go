@@ -8,6 +8,39 @@ import (
 type (
 	DataUploadResponse struct {
 	}
+
+	DataGetResponse struct {
+		CpuUsage float32 ``
+		//{
+		//	"TimeStamp": "0",
+		//	"CpuUsage": {
+		//	"AppUsage": 10.0,
+		//	"TotalUsage": 22.0
+		//},
+		//	"AndroidFps": {
+		//	"fps": 16.0,
+		//	"Jank": 0.0
+		//},
+		//	"AndroidMemoryUsage": {
+		//	"Memory": 42.0,
+		//	"SwapMemory": 0.0
+		//},
+		//	"NetworkUsage": {
+		//	"UpSpeed": 0.0,
+		//	"DownSpeed": 0.0
+		//},
+		//	"CpuTemperature": {
+		//	"CpuTemperature": 35.0
+		//},
+		//	"IsDelete": false,
+		//	"BigJank": {
+		//	"BigJank": 0.0
+		//},
+		//	"VirtualMemory": {
+		//	"VirtualMemory": 1545.0
+		//}
+		//},
+	}
 )
 
 type (
@@ -37,10 +70,12 @@ type (
 	TaskGetDetailResponse struct {
 		TaskSummary models.TaskSummaryModel `json:"summary"`
 		TaskDetail  TaskGetListResponse     `json:"task_detail"`
-		LabelInfos  LabelGetListResponse	`json:"label_infos"`
+		LabelInfos  LabelGetListResponse    `json:"label_infos"`
 	}
 
 	TaskGetReportResponse struct {
+		TaskDetail TaskGetListResponse  `json:"task_detail"`
+		LabelInfos LabelGetListResponse `json:"label_infos"`
 
 	}
 )
@@ -50,7 +85,6 @@ type (
 		LabelId   int    `json:"label_id"`
 		LabelName string `json:"label_name"`
 	}
-
 
 	LabelResponse struct {
 		Summary models.LabelSummaryModel `json:"summary"`
