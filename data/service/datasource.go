@@ -8,6 +8,11 @@ import (
     "github.com/tsbxmw/datasource/common/mq"
 )
 
+
+const (
+    QUEUE_NAME = "data_1"
+)
+
 type (
     DataSourceMgr interface {
         AuthCheck(key, secret string) bool
@@ -31,7 +36,7 @@ func (ds *DataSourceService) AuthCheck(key, secret string) bool {
     common.LogrusLogger.Info("test on ds authcheck")
     channel := mq.GetMqChannel()
     defer channel.Close()
-    queueName := "data_1"
+    queueName := QUEUE_NAME
     q, err := channel.QueueDeclare(
         queueName,
         true, // 设置为true之后RabbitMQ将永远不会丢失队列，否则重启或异常退出的时候会丢失
@@ -44,7 +49,7 @@ func (ds *DataSourceService) AuthCheck(key, secret string) bool {
 
     //生产者将消息发送到默认交换器中，不是发送到队列中
     err = channel.Publish(
-        "data_1", //默认交换器
+        QUEUE_NAME, //默认交换器
         q.Name,   //使用队列的名字来当作route-key是因为声明的每一个队列都有一个隐式路由到默认交换器
         false,
         false,
@@ -70,9 +75,8 @@ func (ds *DataSourceService) DataUpload(req *DataUploadRequest) *DataUploadRespo
 
     channel := mq.GetMqChannel()
     defer channel.Close()
-    queueName := "data_1"
     q, err := channel.QueueDeclare(
-        queueName,
+        QUEUE_NAME,
         true, // 设置为true之后RabbitMQ将永远不会丢失队列，否则重启或异常退出的时候会丢失
         false,
         false,
@@ -82,7 +86,7 @@ func (ds *DataSourceService) DataUpload(req *DataUploadRequest) *DataUploadRespo
 
     //生产者将消息发送到默认交换器中，不是发送到队列中
     err = channel.Publish(
-        "data_1", //默认交换器
+        QUEUE_NAME, //默认交换器
         q.Name,   //使用队列的名字来当作route-key是因为声明的每一个队列都有一个隐式路由到默认交换器
         false,
         false,
