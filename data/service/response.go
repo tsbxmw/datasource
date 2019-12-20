@@ -94,6 +94,9 @@ type (
 	LabelGetListResponse struct {
 		Label []LabelResponse `json:"label"`
 	}
+
+	LabelCalSummaryResponse struct {
+	}
 )
 
 type (

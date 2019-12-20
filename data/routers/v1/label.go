@@ -13,8 +13,8 @@ func LabelInit(c *gin.Context) {
 		//sdkVersion string
 		//userId int
 		err error
+		label = service.LabelInitRequest{}
 	)
-	label := service.LabelInitRequest{}
 	if err := c.ShouldBindJSON(&label); err != nil {
 		common.LogrusLogger.Error(err)
 		common.InitKey(c)
@@ -31,8 +31,8 @@ func LabelInit(c *gin.Context) {
 	}
 
 	labelRes := ds.LabelInit(&label)
-	c.JSON(200, common.Response{
-		Code:    200,
+	c.JSON(common.HTTP_STATUS_OK, common.Response{
+		Code:    common.HTTP_RESPONSE_OK,
 		Message: "success",
 		Data:    labelRes,
 	})
@@ -42,8 +42,8 @@ func LabelGetDetailById(c *gin.Context) {
 	common.LogrusLogger.Info("Label Get Detail")
 	var (
 		err error
+		labelReq = service.LabelGetDetailRequest{}
 	)
-	labelReq := service.LabelGetDetailRequest{}
 	if err := c.ShouldBind(&labelReq); err != nil {
 		common.LogrusLogger.Error(err)
 		common.InitKey(c)
@@ -60,8 +60,8 @@ func LabelGetDetailById(c *gin.Context) {
 	}
 
 	labelRes := ds.LabelGetDetail(&labelReq)
-	c.JSON(200, common.Response{
-		Code:    200,
+	c.JSON(common.HTTP_STATUS_OK, common.Response{
+		Code:    common.HTTP_RESPONSE_OK,
 		Message: "success",
 		Data:    labelRes,
 	})
@@ -71,8 +71,8 @@ func LabelGetByTaskId(c *gin.Context) {
 	common.LogrusLogger.Info("Label Get Detail")
 	var (
 		err error
+		labelReq = service.LabelGetListByTaskIdRequest{}
 	)
-	labelReq := service.LabelGetListByTaskIdRequest{}
 	if err = c.ShouldBind(&labelReq); err != nil {
 		common.LogrusLogger.Error(err)
 		common.InitKey(c)
@@ -89,8 +89,39 @@ func LabelGetByTaskId(c *gin.Context) {
 	}
 	labelRes := ds.LabelGetListByTaskId(&labelReq)
 	c.JSON(common.HTTP_STATUS_OK, common.Response{
-		Code:    common.HTTP_STATUS_OK,
+		Code:    common.HTTP_RESPONSE_OK,
 		Message: common.HTTP_MESSAGE_OK,
 		Data:    &labelRes,
+	})
+}
+
+func LabelCalLabelSummary(c *gin.Context) {
+	common.LogrusLogger.Info("Label Cal Summary")
+	var (
+		err error
+		labelCalSummaryReq = service.LabelCalSummaryRequest{}
+	)
+
+	if err = c.ShouldBindJSON(&labelCalSummaryReq); err != nil {
+		common.LogrusLogger.Error(err)
+		common.InitKey(c)
+		c.Keys["code"] = common.HTTP_PARAMS_ERROR
+		panic(err)
+	}
+
+	var (
+		ds *service.DataSourceService
+	)
+	ds, err = service.NewDataSourceMgr(c)
+	if err != nil {
+		panic(err)
+	}
+
+	labelCalSummaryRes := ds.CalLabelSummary(&labelCalSummaryReq)
+
+	c.JSON(common.HTTP_STATUS_OK,common.Response{
+		Code:    common.HTTP_RESPONSE_OK,
+		Message: common.HTTP_MESSAGE_OK,
+		Data:    &labelCalSummaryRes,
 	})
 }

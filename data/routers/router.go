@@ -38,6 +38,8 @@ func InitRouter(e *gin.Engine) {
 		GroupV1.POST("/data/label", v1.LabelInit)
 		// 通过
 		GroupV1.GET("/data/label", v1.LabelGetDetailById)
+		// 计算 label summary
+		GroupV1.POST("/data/label/calsummary", v1.LabelCalLabelSummary)
 	}
 
 	GroupHealth := e.Group("/v1/health")

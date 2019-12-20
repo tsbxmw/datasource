@@ -36,6 +36,11 @@ type (
 	LabelGetListByTaskIdRequest struct {
 		TaskId int `form:"task_id" binding:"required"`
 	}
+
+	LabelCalSummaryRequest struct {
+		LabelId int `json:"label_id" binding:"required"`
+		TaskId  int `json:"task_id" binding:"required"`
+	}
 )
 
 type (
