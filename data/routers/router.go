@@ -32,6 +32,8 @@ func InitRouter(e *gin.Engine) {
 		GroupV1.GET("/data/task/device", v1.DeviceGetById)
 		// 通过 task_id 获取 label 信息
 		GroupV1.GET("/data/task/label", v1.LabelGetByTaskId)
+		// 计算 task summary
+		GroupV1.POST("/data/task/calsummary", v1.TaskCalSummary)
 
 		//label group
 		//GroupV1.POST("/data/task/")

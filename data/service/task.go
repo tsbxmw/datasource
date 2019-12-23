@@ -161,3 +161,109 @@ func (ds *DataSourceService) TaskGetReort(req *TaskGetReportRequest) *TaskGetDet
 
 	return &res
 }
+
+
+// Task Get Summary by Task id
+func (ds *DataSourceService) TaskSummaryGet(taskId int) *models.TaskSummaryModel {
+	var (
+		err          error
+		taskSummary = models.TaskSummaryModel{}
+	)
+
+	ds.TaskSummaryInit(taskId)
+	if err = common.DB.Table(taskSummary.TableName()).Where("task_id=?", taskId).Find(&taskSummary).Error; err != nil {
+		panic(err)
+	}
+	return &taskSummary
+}
+
+// Task Summary Init
+func (ds *DataSourceService) TaskSummaryInit(taskId int) {
+	var (
+		err          error
+		taskSummary = models.TaskSummaryModel{}
+	)
+	if err = common.DB.Table(taskSummary.TableName()).Where("task_id=?", taskId).Find(&taskSummary).Error; err != nil {
+		if err.Error() != "record not found" {
+			common.LogrusLogger.Error(err)
+			common.InitKey(ds.Ctx)
+			ds.Ctx.Keys["code"] = common.MYSQL_QUERY_ERROR
+			panic(err)
+		} else {
+			taskSummary.TaskId = taskId
+			taskSummary.CreationTime = time.Now()
+			taskSummary.ModifiedTime = time.Now()
+			if err = common.DB.Table(taskSummary.TableName()).Create(&taskSummary).Error; err != nil {
+				panic(err)
+			}
+		}
+	}
+}
+
+
+func (ds *DataSourceService) TaskSummaryUpdate(taskId int, taskSummary models.TaskSummaryModel) {
+
+	var (
+		err error
+	)
+	taskCurrent := ds.TaskSummaryGet(taskId)
+	taskSummary.TaskId = taskCurrent.TaskId
+	taskSummary.ID = taskCurrent.ID
+	taskSummary.CreationTime = taskCurrent.CreationTime
+	taskSummary.ModifiedTime = time.Now()
+	if err = common.DB.Model(&taskCurrent).Update(&taskSummary).Error; err != nil {
+		common.LogrusLogger.Error(err)
+		common.InitKey(ds.Ctx)
+		ds.Ctx.Keys["code"] = common.MYSQL_UPDATE_ERROR
+		panic(err)
+	}
+}
+
+
+func (ds *DataSourceService) TaskCalSummary(req *TaskCalSummaryRequest) *TaskCalSummaryResponse {
+	var (
+		res = TaskCalSummaryResponse{}
+		labels = ds.LabelGetListByTaskId(&LabelGetListByTaskIdRequest{TaskId: req.TaskId}).Label
+		labelCount = float32(len(labels))
+		taskSum = models.TaskSummaryModel{}
+	)
+
+	for _, labelInfo := range labels {
+		label := labelInfo.Summary
+		taskSum.BatteryCurrentAvg += label.BatteryCurrentAvg
+		taskSum.BatteryPowerAvg += label.BatteryPowerAvg
+		taskSum.BatteryVoltageAvg += label.BatteryVoltageAvg
+
+		taskSum.FpsAvg += label.FpsAvg
+
+		taskSum.CpuAppAvg += label.CpuAppAvg
+		taskSum.CpuAvg += label.CpuAvg
+
+		taskSum.GpuDeviceAvg += label.GpuDeviceAvg
+		taskSum.GpuTilerAvg += label.GpuTilerAvg
+		taskSum.GpuRenderAvg += label.GpuRenderAvg
+
+		taskSum.NetRecvAvg += label.NetRecvAvg
+		taskSum.NetSendAvg += label.NetSendAvg
+	}
+
+	taskSum.BatteryCurrentAvg += taskSum.BatteryCurrentAvg / labelCount
+	taskSum.BatteryPowerAvg += taskSum.BatteryPowerAvg / labelCount
+	taskSum.BatteryVoltageAvg += taskSum.BatteryVoltageAvg / labelCount
+
+	taskSum.FpsAvg += taskSum.FpsAvg / labelCount
+
+	taskSum.CpuAppAvg += taskSum.CpuAppAvg / labelCount
+	taskSum.CpuAvg += taskSum.CpuAvg / labelCount
+
+	taskSum.GpuDeviceAvg += taskSum.GpuDeviceAvg / labelCount
+	taskSum.GpuTilerAvg += taskSum.GpuTilerAvg / labelCount
+	taskSum.GpuRenderAvg += taskSum.GpuRenderAvg / labelCount
+
+	taskSum.NetRecvAvg += taskSum.NetRecvAvg / labelCount
+	taskSum.NetSendAvg += taskSum.NetSendAvg / labelCount
+
+	ds.TaskSummaryUpdate(req.TaskId, taskSum)
+
+	return &res
+}

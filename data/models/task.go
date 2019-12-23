@@ -28,25 +28,25 @@ func (TaskUserModel) TableName() string {
 
 type TaskSummaryModel struct {
     common.BaseModel
-    TaskId            float32 `json:"task_id"`
+    TaskId            int `json:"task_id"`
     FpsAvg            float32 `json:"fps_avg"`
     FpsVar            float32 `json:"fps_var"`
-    FpsGe18           float32 `json:"fps_ge_18"`
-    FpsGe25           float32 `json:"fps_ge_25"`
+    FpsGe_18           float32 `json:"fps_ge_18"`
+    FpsGe_25           float32 `json:"fps_ge_25"`
     FpsDrop           float32 `json:"fps_drop"`
-    JanAvg            float32 `json:"jank_avg"`
+    JankAvg            float32 `json:"jank_avg"`
     JankPerHour       float32 `json:"jank_per_hour"`
     BigJankAvg        float32 `json:"big_jank_avg"`
     BigJankPerHour    float32 `json:"big_jank_per_hour"`
-    FTimeAvg          float32 `json:"ftime_avg"`
-    FTimeGe100        float32 `json:"ftime_ge_100"`
-    FTimeDelta        float32 `json:"ftime_delta"`
+    FtimeAvg          float32 `json:"ftime_avg"`
+    FtimeGe_100        float32 `json:"ftime_ge_100"`
+    FtimeDelta        float32 `json:"ftime_delta"`
     CpuAvg            float32 `json:"cpu_avg"`
-    CpuLe50Avg        float32 `json:"cpu_le_50_avg"`
-    CpuLe90Avg        float32 `json:"cpu_le_80_avg"`
+    CpuLe_50Avg        float32 `json:"cpu_le_50_avg"`
+    CpuLe_90Avg        float32 `json:"cpu_le_80_avg"`
     CpuAppAvg         float32 `json:"cpu_app_avg"`
-    CpuAppLe50Avg     float32 `json:"cpu_app_le_60_avg"`
-    CpuAppLe90Avg     float32 `json:"cpu_app_le_80_avg"`
+    CpuAppLe_50Avg     float32 `json:"cpu_app_le_60_avg"`
+    CpuAppLe_90Avg     float32 `json:"cpu_app_le_80_avg"`
     CpuTempAvg        float32 `json:"cpu_temp_avg"`
     MemUseAvg         float32 `json:"mem_use_avg"`
     MemUseMax         float32 `json:"mem_use_max"`
@@ -67,14 +67,14 @@ type TaskSummaryModel struct {
     GpuRenderAvg      float32 `json:"gpu_render_avg"`
     GpuTilerAvg       float32 `json:"gpu_tiler_avg"`
     GpuDeviceAvg      float32 `json:"gpu_device_avg"`
-    SeitchAvg         float32 `json:"switch_avg"`
+    SwitchAvg         float32 `json:"switch_avg"`
     WakeupAvg         float32 `json:"wakeup_avg"`
     NetSendAvg        float32 `json:"net_send_avg"`
     NetSendSum        float32 `json:"net_send_sum"`
-    NetSendPre10mAvg  float32 `json:"net_send_pre_10m_avg"`
+    NetSendPre_10mAvg  float32 `json:"net_send_pre_10m_avg"`
     NetRecvAvg        float32 `json:"net_recv_avg"`
     NetRecvSum        float32 `json:"net_recv_sum"`
-    NetRecvPre10mAvg  float32 `json:"net_recv_pre_10m_avg"`
+    NetRecvPre_10mAvg  float32 `json:"net_recv_pre_10m_avg"`
     BatteryCurrentAvg float32 `json:"battery_current_avg"`
     BatteryPowerAvg   float32 `json:"battery_power_avg"`
     BatteryVoltageAvg float32 `json:"battery_voltage_avg"`
@@ -83,7 +83,7 @@ type TaskSummaryModel struct {
     NetEnergy         float32 `json:"net_energy"`
     LocationEnergy    float32 `json:"location_energy"`
     DisplayEnergy     float32 `json:"display_energy"`
-    OverheadEnery     float32 `json:"overhead_energy"`
+    OverheadEnergy     float32 `json:"overhead_energy"`
 }
 
 func (TaskSummaryModel) TableName() string {

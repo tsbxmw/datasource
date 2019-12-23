@@ -76,7 +76,9 @@ type (
 	TaskGetReportResponse struct {
 		TaskDetail TaskGetListResponse  `json:"task_detail"`
 		LabelInfos LabelGetListResponse `json:"label_infos"`
+	}
 
+	TaskCalSummaryResponse struct {
 	}
 )
 

@@ -205,7 +205,7 @@ func (ds *DataSourceService) CalLabelSummary(req *LabelCalSummaryRequest) *Label
 		}
 	}
 
-	dataCount := len(dataAll)
+	dataCount := float32(len(dataAll))
 
 	if dataCount == 0 {
 		return &res
@@ -230,21 +230,21 @@ func (ds *DataSourceService) CalLabelSummary(req *LabelCalSummaryRequest) *Label
 
 	}
 
-	labelSum.BatteryCurrentAvg = labelSum.BatteryCurrentAvg / float32(dataCount)
-	labelSum.BatteryPowerAvg = labelSum.BatteryPowerAvg / float32(dataCount)
-	labelSum.BatteryVoltageAvg = labelSum.BatteryVoltageAvg / float32(dataCount)
+	labelSum.BatteryCurrentAvg = labelSum.BatteryCurrentAvg / dataCount
+	labelSum.BatteryPowerAvg = labelSum.BatteryPowerAvg / dataCount
+	labelSum.BatteryVoltageAvg = labelSum.BatteryVoltageAvg / dataCount
 
-	labelSum.FpsAvg = labelSum.FpsAvg / float32(dataCount)
+	labelSum.FpsAvg = labelSum.FpsAvg / dataCount
 
-	labelSum.CpuAppAvg = labelSum.CpuAppAvg / float32(dataCount)
-	labelSum.CpuAvg = labelSum.CpuAvg / float32(dataCount)
+	labelSum.CpuAppAvg = labelSum.CpuAppAvg / dataCount
+	labelSum.CpuAvg = labelSum.CpuAvg / dataCount
 
-	labelSum.GpuDeviceAvg = labelSum.GpuDeviceAvg / float32(dataCount)
-	labelSum.GpuTilerAvg = labelSum.GpuTilerAvg / float32(dataCount)
-	labelSum.GpuRenderAvg = labelSum.GpuRenderAvg / float32(dataCount)
+	labelSum.GpuDeviceAvg = labelSum.GpuDeviceAvg / dataCount
+	labelSum.GpuTilerAvg = labelSum.GpuTilerAvg / dataCount
+	labelSum.GpuRenderAvg = labelSum.GpuRenderAvg / dataCount
 
-	labelSum.NetRecvAvg = labelSum.NetRecvAvg / float32(dataCount)
-	labelSum.NetSendAvg = labelSum.NetSendAvg / float32(dataCount)
+	labelSum.NetRecvAvg = labelSum.NetRecvAvg / dataCount
+	labelSum.NetSendAvg = labelSum.NetSendAvg / dataCount
 
 	ds.LabelSummaryUpdate(label.ID, &labelSum)
 	return &res

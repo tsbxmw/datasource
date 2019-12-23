@@ -124,3 +124,32 @@ func TaskGetDetail(c *gin.Context) {
 		Data:    &res,
 	})
 }
+
+func TaskCalSummary(c *gin.Context) {
+	common.LogrusLogger.Info("Task Cal Summary")
+	var (
+		err error
+	)
+	req := service.TaskCalSummaryRequest{}
+	if err = c.ShouldBindJSON(&req); err != nil {
+		common.LogrusLogger.Error(err)
+		common.InitKey(c)
+		c.Keys["code"] = common.HTTP_PARAMS_ERROR
+		panic(err)
+	}
+	var ds *service.DataSourceService
+
+	ds, err = service.NewDataSourceMgr(c)
+	if err != nil {
+		common.LogrusLogger.Error(err)
+		panic(err)
+	}
+
+	res := ds.TaskCalSummary(&req)
+
+	c.JSON(common.HTTP_RESPONSE_OK, common.Response{
+		Code:    common.HTTP_STATUS_OK,
+		Message: "success",
+		Data:    &res,
+	})
+}

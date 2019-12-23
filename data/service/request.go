@@ -21,6 +21,10 @@ type (
 	TaskGetReportRequest struct {
 		TaskId int `form:"task_id"`
 	}
+
+	TaskCalSummaryRequest struct {
+		TaskId int `json:"task_id"`
+	}
 )
 
 type (
