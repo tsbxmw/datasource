@@ -50,7 +50,7 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 					signal.Notify(quit, os.Interrupt, os.Kill)
 					<-quit
 					log.Println("Shutdown Server <<<", conf.ServiceName, ">>>")
-
+					httpReal.Shutdown()
 					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 					defer cancel()
 					ctx.Done()

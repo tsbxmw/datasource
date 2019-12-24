@@ -50,10 +50,30 @@ func (httpServer HttpServer) Serve() {
 		DeregisterCriticalServiceAfter: time.Second * 60,
 		Interval:                       time.Second * 60,
 	}
-	consulClient := consulRegister.RegisterHTTP()
-	defer consulClient.Agent().ServiceDeregister(httpServer.SvcName)
+	consulRegister.RegisterHTTP()
 
 	if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
+		panic(err)
+	}
+}
+
+func (httpServer HttpServer) Shutdown() {
+	consulName := httpServer.SvcName + "-" + common.LocalIP()
+	common.LogrusLogger.Info("Consul Deregister Now ", consulName)
+	// init consul
+	consulRegister := consul.ConsulRegister{
+		Address:                        httpServer.Address,
+		Port:                           httpServer.Port,
+		ConsulAddress:                  httpServer.ConsulAddr,
+		ConsulPort:                     httpServer.ConsulPort,
+		Service:                        httpServer.SvcName,
+		Tag:                            []string{httpServer.SvcName},
+		DeregisterCriticalServiceAfter: time.Second * 60,
+		Interval:                       time.Second * 60,
+	}
+	consulClient := consulRegister.NewConsulClient()
+	if err:=consulClient.Agent().ServiceDeregister(consulName); err != nil {
+		common.LogrusLogger.Error(err)
 		panic(err)
 	}
 }

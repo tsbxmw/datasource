@@ -8,6 +8,7 @@ type (
     HttpServer interface {
         Serve()
         ServeWorker()
+        Shutdown()
         Init(config *ServiceConfig) HttpServer
     }
 
