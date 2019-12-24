@@ -77,6 +77,8 @@ func (as *AuthService) RefreshToken(req *TokenRequest) *TokenResponse {
         }
         return as.TokenGenerate(req)
     }
+
+
     res.Secret = uuid.New().String()[:16]
     res.Key = authModel.AppKey
     authModel.AppSecret = res.Secret

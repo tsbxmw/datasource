@@ -21,6 +21,12 @@ func AuthMiddleware() gin.HandlerFunc {
         if secret == "" {
             secret = c.Query("secret")
         }
+
+        if key == "" || secret == "" {
+            c.Keys["code"] = common.HTTP_AUTH_ERROR
+            panic(common.NewHttpAuthError())
+        }
+
         // redis get first
         redisConn := common.RedisPool.Get()
         defer redisConn.Close()
