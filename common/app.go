@@ -1,7 +1,12 @@
 package common
 
 import (
+	"context"
 	"github.com/urfave/cli"
+	"log"
+	"os"
+	"os/signal"
+	"time"
 )
 
 func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *cli.App, err error) {
@@ -29,21 +34,27 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 				Before:       nil,
 				After:        nil,
 				Action: func(c *cli.Context) error {
+					log.Println("Loading config from", config)
 					conf, err := ConfigFromFileName(config)
+					log.Println("Start Server :", conf.ServiceName)
+					log.Println("Port :", conf.Port)
 					if err != nil {
 						panic(err)
 					}
-					//httpServer = transport.HttpServerImpl{
-					//    SvcName:    conf.ServiceName,
-					//    Address:    conf.HttpAddr,
-					//    Port:       conf.Port,
-					//    DbUri:      conf.DbUri,
-					//    ConsulAddr: conf.ConsulAddr,
-					//    JaegerAddr: conf.JaegerAddr,
-					//}
 					httpReal := httpServer.Init(&conf)
-					httpReal.Serve()
+					go httpReal.Serve()
 
+					// Wait for interrupt signal to gracefully shutdown the server with
+					// a timeout of 5 seconds.
+					quit := make(chan os.Signal)
+					signal.Notify(quit, os.Interrupt)
+					<-quit
+					log.Println("Shutdown Server <<<", conf.ServiceName, ">>>")
+
+					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+					defer cancel()
+					ctx.Done()
+					log.Println("Server <<<", conf.ServiceName, ">>> Exit  OK")
 					return nil
 				},
 				OnUsageError:       nil,
@@ -73,8 +84,20 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 					}
 
 					httpReal := httpServer.Init(&conf)
-					httpReal.ServeWorker()
+					go httpReal.ServeWorker()
 
+					// Wait for interrupt signal to gracefully shutdown the server with
+					// a timeout of 5 seconds.
+					quit := make(chan os.Signal)
+					signal.Notify(quit, os.Interrupt)
+					<-quit
+					log.Println("Shutdown Server : <<<", conf.ServiceName, ">>>")
+
+					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+					defer cancel()
+					ctx.Done()
+					log.Println("Server <<<", conf.ServiceName, ">>> Worker Exit  OK")
+					return nil
 					return nil
 				},
 				OnUsageError:       nil,

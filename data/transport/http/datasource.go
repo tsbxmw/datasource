@@ -22,6 +22,7 @@ type (
 
 func (httpServer HttpServer) Serve() {
 	fmt.Println("test on httpserver", httpServer.SvcName)
+	gin.SetMode(gin.ReleaseMode)
 	engin := gin.New()
 	common.InitDB(httpServer.DbUri)
 	// init logger
@@ -63,13 +64,15 @@ func (httpServer HttpServer) ServeWorker() {
 	common.InitDB(httpServer.DbUri)
 	// init logger
 	middleware.LoggerInit(engin, "./log/datasource.log")
+	// init redis pool
 	common.InitRedisPool("tcp", httpServer.RedisHost+":"+httpServer.RedisPort, httpServer.RedisPassword, httpServer.RedisDB)
+	// init mq
 	mq.MQInit(httpServer.MqUri)
 	// init exception
 	middleware.ExceptionInit(engin)
 	// init router
 	routers.InitRouter(engin)
-
+	// init worker
 	workers.WorkerInit(httpServer.MqUri)
 
 	if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port+1)); err != nil {

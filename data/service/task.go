@@ -229,6 +229,7 @@ func (ds *DataSourceService) TaskCalSummary(req *TaskCalSummaryRequest) *TaskCal
 	)
 
 	for _, labelInfo := range labels {
+		ds.CalLabelSummary(&LabelCalSummaryRequest{LabelId: labelInfo.Info.ID, TaskId: labelInfo.Info.TaskId})
 		label := labelInfo.Summary
 		taskSum.BatteryCurrentAvg += label.BatteryCurrentAvg
 		taskSum.BatteryPowerAvg += label.BatteryPowerAvg
