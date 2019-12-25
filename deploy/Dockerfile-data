@@ -8,5 +8,3 @@ COPY ./dist/data /bin
 RUN mkdir log   && ls /bin/    && chmod +x /bin/data
 
 EXPOSE 9040
-
-ENTRYPOINT ["/bin/data", "--config=/config/auth/dev-local.json", "httpserver"]

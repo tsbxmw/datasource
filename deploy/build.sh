@@ -10,3 +10,4 @@ docker build -f Dockerfile-data -t mengwei2275/datasource-data:v1 .
 
 docker push mengwei2275/datasource-auth:v1
 docker push mengwei2275/datasource-data:v1
+docker push mengwei2275/datasource-data:v1
