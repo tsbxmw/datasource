@@ -1,0 +1,12 @@
+FROM ubuntu:18.04
+
+RUN mkdir /config
+RUN mkdir /config/auth
+
+COPY ./dist/auth /bin
+
+RUN mkdir log   && ls /bin/    && chmod +x /bin/auth
+
+EXPOSE 9040
+
+ENTRYPOINT ["/bin/auth", "--config=/config/auth/dev-local.json", "httpserver"]
