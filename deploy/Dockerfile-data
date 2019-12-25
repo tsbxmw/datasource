@@ -7,4 +7,6 @@ COPY ./dist/data /bin
 
 RUN mkdir log   && ls /bin/    && chmod +x /bin/data
 
-EXPOSE 9040
+EXPOSE 9030
+
+ENTRYPOINT ["/bin/data", "--config=/config/data/dev-local.json"]
