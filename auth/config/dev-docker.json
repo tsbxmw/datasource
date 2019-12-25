@@ -1,0 +1,17 @@
+{
+  "address": "localhost",
+  "consul_addr": "http://localhost",
+  "consul_port": 8500,
+  "db_uri": "root:mengwei@(122.51.145.198:3306)/datasource?parseTime=true&loc=Local",
+  "jaeger_addr": "",
+  "log_file": "log/auth.log",
+  "port": 9040,
+  "grpc_port": 9041,
+  "retry_max": 3,
+  "retry_timeout": 500,
+  "service_name": "auth_v1",
+  "redis_host": "localhost",
+  "redis_password": "mengwei",
+  "redis_port": "6379",
+  "redis_db": 1
+}

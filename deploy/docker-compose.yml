@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+
+  data-httpserver:
+    image: mengwei2275/datasource-data:v0.0.1
+    restart: always
+    volumes:
+      - "./data/config/:/config/data/"
+    command: httpserver
+
+  data-worker:
+    image: mengwei2275/datasource-data:v0.0.1
+    restart: always
+    volumes:
+      - "./data/config/:/config/data/"
+    command: worker-server
+
+  auth-httpserver:
+    image: mengwei2275/datasource-auth:v0.0.1
+    restart: always
+    volumes:
+      - "./auth/config/:/config/auth/"
+    command: httpserver
+
+  rabbit-mq:
+    hostname: localhost
+    image: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    restart: always
+    volumes:
+      - ./rabbitmqdata:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123456
+    network_mode: "host"
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    restart: always
+    volumes:
+      - ./redis_data:/data
+

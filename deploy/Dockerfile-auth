@@ -9,4 +9,4 @@ RUN mkdir log   && ls /bin/    && chmod +x /bin/auth
 
 EXPOSE 9040
 
-ENTRYPOINT ["/bin/auth", "--config=/config/auth/dev-local.json"]
+ENTRYPOINT ["/bin/auth", "--config=/config/auth/dev-docker.json"]

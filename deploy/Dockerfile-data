@@ -9,4 +9,4 @@ RUN mkdir log   && ls /bin/    && chmod +x /bin/data
 
 EXPOSE 9030
 
-ENTRYPOINT ["/bin/data", "--config=/config/data/dev-local.json"]
+ENTRYPOINT ["/bin/data", "--config=/config/data/dev-docker.json"]
