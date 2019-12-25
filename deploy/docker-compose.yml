@@ -3,6 +3,7 @@ services:
 
   rabbit-mq:
     image: rabbitmq
+    container_name: datasource-rabbit-mq
     ports:
       - 5672:5672
       - 15672:15672
@@ -15,6 +16,7 @@ services:
 
   redis:
     image: redis
+    container_name: datasource-redis
     ports:
       - 6379:6379
     restart: always
@@ -22,6 +24,7 @@ services:
       - ./redis_data:/data
 
   data-httpserver:
+    container_name: datasource-data-httpserver
     depends_on:
       - redis
       - rabbit-mq
@@ -34,6 +37,7 @@ services:
     command: httpserver
 
   data-worker:
+    container_name: datasource-data-worker
     depends_on:
       - redis
       - rabbit-mq
@@ -46,6 +50,7 @@ services:
     command: worker-server
 
   auth-httpserver:
+    container_name: datasource-auth-httpserver
     depends_on:
       - redis
       - rabbit-mq
