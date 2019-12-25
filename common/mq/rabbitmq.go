@@ -2,7 +2,9 @@ package mq
 
 import (
     "errors"
+    "fmt"
     "github.com/streadway/amqp"
+    "time"
 )
 
 var MqConn *amqp.Connection
@@ -14,11 +16,20 @@ var MqQueue map[string]amqp.Queue
 var MqUriStore string
 
 func MQInit(rmqUri string)(*amqp.Connection) {
-    var err error
+    var (
+        err error
+        conn *amqp.Connection
+        trys = 10
+    )
     MqUriStore = rmqUri
-    conn, err := amqp.Dial(rmqUri)
-    if err != nil {
-        panic(err)
+    for i:=1;i<trys;i++ {
+        conn, err = amqp.Dial(rmqUri)
+        if err != nil {
+            fmt.Println(err)
+        } else {
+            break
+        }
+        time.Sleep(time.Second * 5)
     }
     MqConn = conn
     return conn

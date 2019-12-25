@@ -1,29 +1,7 @@
 version: '3.5'
 services:
 
-  data-httpserver:
-    image: mengwei2275/datasource-data:v0.0.1
-    restart: always
-    volumes:
-      - "./data/config/:/config/data/"
-    command: httpserver
-
-  data-worker:
-    image: mengwei2275/datasource-data:v0.0.1
-    restart: always
-    volumes:
-      - "./data/config/:/config/data/"
-    command: worker-server
-
-  auth-httpserver:
-    image: mengwei2275/datasource-auth:v0.0.1
-    restart: always
-    volumes:
-      - "./auth/config/:/config/auth/"
-    command: httpserver
-
   rabbit-mq:
-    hostname: localhost
     image: rabbitmq
     ports:
       - 5672:5672
@@ -34,7 +12,6 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=123456
-    network_mode: "host"
 
   redis:
     image: redis
@@ -44,3 +21,38 @@ services:
     volumes:
       - ./redis_data:/data
 
+  data-httpserver:
+    depends_on:
+      - redis
+      - rabbit-mq
+    image: mengwei2275/datasource-data:v0.0.2
+    restart: always
+    volumes:
+      - "./data/config/:/config/data/"
+    command: httpserver
+
+  data-worker:
+    depends_on:
+      - redis
+      - rabbit-mq
+    image: mengwei2275/datasource-data:v0.0.2
+    restart: always
+    volumes:
+      - "./data/config/:/config/data/"
+    command: worker-server
+
+  auth-httpserver:
+    depends_on:
+      - redis
+      - rabbit-mq
+    image: mengwei2275/datasource-auth:v0.0.2
+    restart: always
+    volumes:
+      - "./auth/config/:/config/auth/"
+    command: httpserver
+
+
+networks:
+  default:
+    name: datasource
+    driver: bridge
