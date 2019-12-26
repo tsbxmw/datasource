@@ -17,6 +17,7 @@ services:
   redis:
     image: redis
     container_name: datasource-redis
+    command: redis-server --port 6379 --requirepass mengwei
     ports:
       - 6379:6379
     restart: always
