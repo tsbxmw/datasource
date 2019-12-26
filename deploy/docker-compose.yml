@@ -29,7 +29,7 @@ services:
     depends_on:
       - redis
       - rabbit-mq
-    image: mengwei2275/datasource-data:v0.0.3
+    image: mengwei2275/datasource-data:v0.0.4
     restart: always
     ports:
       - 9055:9055
@@ -42,7 +42,7 @@ services:
     depends_on:
       - redis
       - rabbit-mq
-    image: mengwei2275/datasource-data:v0.0.3
+    image: mengwei2275/datasource-data:v0.0.4
     restart: always
     ports:
       - 9056:9056
@@ -55,7 +55,7 @@ services:
     depends_on:
       - redis
       - rabbit-mq
-    image: mengwei2275/datasource-auth:v0.0.3
+    image: mengwei2275/datasource-auth:v0.0.4
     restart: always
     ports:
       - 9050:9050
