@@ -28,6 +28,8 @@ func (httpServer HttpServer) Serve() {
 	engin := gin.New()
 	// init logger
 	middleware.LoggerInit(engin, "./log/auth.log")
+	// init Apidoc
+	//middleware.ApidocMiddlewareInit(engin)
 	// init redis
 	common.InitRedisPool("tcp", httpServer.RedisHost+":"+string(httpServer.RedisPort), httpServer.RedisPassword, httpServer.RedisDB)
 	// init exception

@@ -1,0 +1,10 @@
+{
+  "name": "Datasource API",
+  "version": "0.0.1",
+  "description": "Datasource api doc here",
+  "url": "http://localhost",
+  "template": {
+    "withCompare": true,
+    "withGenerator": true
+  }
+}
