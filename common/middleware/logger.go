@@ -79,7 +79,6 @@ func loggerMiddleware(file string) (logger gin.HandlerFunc, err error) {
 		end := time.Now()
 		latency := end.Sub(start)
 
-
 		path := c.Request.URL.Path
 		params := c.Request.Header
 		clientIP := c.ClientIP()
