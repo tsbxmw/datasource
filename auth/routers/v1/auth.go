@@ -7,6 +7,7 @@ import (
 )
 
 func Token(c *gin.Context) {
+	common.LogrusLogger.Info("Token Get")
     common.InitKey(c)
     tokenReq := service.TokenRequest{}
     if err := c.ShouldBind(&tokenReq); err != nil {

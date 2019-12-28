@@ -17,8 +17,8 @@ func InitLogger() *logrus.Logger {
 		Field: "source",
 		Skip: 0,
 	}
-	logrus.AddHook(hook)
 	LogrusLogger = logrus.New()
+	LogrusLogger.AddHook(hook)
 	return LogrusLogger
 }
 
@@ -49,7 +49,7 @@ func findCaller(skip int) string {
 	for i := 0; i < 11; i++ {
 		file, line, pc = getCaller(skip + i)
 		// 过滤掉所有logrus包，即可得到生成代码信息
-		if !strings.HasPrefix(file, "logrus") {
+		if !strings.HasSuffix(file, "logger.go") && !strings.HasPrefix(file, "logrus") {
 			break
 		}
 	}
