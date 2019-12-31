@@ -57,6 +57,10 @@
 			"revisionTime": "2019-10-10T23:27:47Z"
 		},
 		{
+			"path": "github.com/cpuguy83/go-md2man/v2/md2man",
+			"revision": ""
+		},
+		{
 			"checksumSHA1": "TysdGuHLiTwx5SRT2iFSQvHUoMw=",
 			"path": "github.com/denisenkom/go-mssqldb",
 			"revision": "44cdfe8d8ba9a7322b38cd8fbb0f2cb445e65a69",
@@ -406,8 +410,8 @@
 		{
 			"checksumSHA1": "Mlhn2RPXfefs+c6mWBV0Y8yOQAg=",
 			"path": "github.com/opentracing/opentracing-go",
-			"revision": "a7454ce5950e83caac9774ef32cc8979e5975f30",
-			"revisionTime": "2019-09-13T14:24:02Z"
+			"revision": "657cde1b36d1913fde8626bc73fc97c64728d94c",
+			"revisionTime": "2019-12-09T01:11:35Z"
 		},
 		{
 			"checksumSHA1": "EMYPYmYapnWcmu5bQO1TeReRtwQ=",
@@ -416,10 +420,10 @@
 			"revisionTime": "2019-12-09T01:11:35Z"
 		},
 		{
-			"checksumSHA1": "Nmrr1xgBkkrpUbyasdge+CngZV8=",
+			"checksumSHA1": "i9ctU6I27QK/dsldxCY/7Fn+WHI=",
 			"path": "github.com/opentracing/opentracing-go/log",
-			"revision": "a7454ce5950e83caac9774ef32cc8979e5975f30",
-			"revisionTime": "2019-09-13T14:24:02Z"
+			"revision": "657cde1b36d1913fde8626bc73fc97c64728d94c",
+			"revisionTime": "2019-12-09T01:11:35Z"
 		},
 		{
 			"checksumSHA1": "bS6hkg5Ofhi4faZ3BnR0XLEeYBk=",
@@ -690,6 +694,10 @@
 			"path": "github.com/urfave/cli",
 			"revision": "92fa29ce8dd4f11ddd9446be12f432ec67b4a6fa",
 			"revisionTime": "2019-11-19T08:04:40Z"
+		},
+		{
+			"path": "github.com/urfave/cli/v2",
+			"revision": ""
 		},
 		{
 			"checksumSHA1": "Gg0iLgdcCww/Z+/gWxEVzIpRBC0=",
