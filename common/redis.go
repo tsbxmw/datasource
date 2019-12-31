@@ -2,8 +2,9 @@ package common
 
 import (
     "encoding/json"
-    "fmt"
     "github.com/garyburd/redigo/redis"
+    "github.com/gin-gonic/gin"
+    "github.com/opentracing/opentracing-go"
 )
 
 var (
@@ -12,8 +13,8 @@ var (
 
 func InitRedisPool(network string, host string, password string, database int) (pool *redis.Pool) {
     pool = &redis.Pool{
-        MaxIdle:     16,
-        MaxActive:   0,
+        MaxIdle:     1000,
+        MaxActive:   10000,
         IdleTimeout: 300,
         Dial: func() (redis.Conn, error) {
             conn, err := redis.Dial(network, host)
@@ -38,29 +39,43 @@ func InitRedisPool(network string, host string, password string, database int) (
     return
 }
 
-func RedisSet(redisConn redis.Conn, key string, value interface{}) (code int, err error) {
-    //if parent := opentracing.SpanFromContext(ctx); parent != nil {
-    //    pctx := parent.Context()
-    //    if tracer := opentracing.GlobalTracer(); tracer != nil {
-    //        redisSpan := tracer.StartSpan("RedisSpan", opentracing.ChildOf(pctx))
-    //        defer redisSpan.Finish()
-    //    }
-    //}
+func RedisSet(ctx *gin.Context, redisConn redis.Conn, key string, value interface{}) (code int, err error) {
+    parentCtx, ok := ctx.Get("ParentSpanContext")
+    var redisSpan opentracing.Span
+    if ok {
+        if tracer := opentracing.GlobalTracer(); tracer != nil {
+            redisSpan = tracer.StartSpan("RedisSpanSet", opentracing.ChildOf(parentCtx.(opentracing.SpanContext)))
+            defer redisSpan.Finish()
+
+            redisSpan.SetTag("redis_conn", redisConn)
+            redisSpan.SetTag("key", key)
+            redisSpan.SetTag("value", value)
+        }
+    }
     var valueJson []byte
 
     if valueJson, err = json.Marshal(value); err != nil {
+        redisSpan.SetTag("error", true)
         return REDIS_SET_ERROR, err
     }
 
     if _, err := redisConn.Do("Set", key, valueJson); err != nil {
-
+        redisSpan.SetTag("error", true)
         return REDIS_SET_ERROR, err
     }
     return
 }
 
-func RedisGet(redisConn redis.Conn, key string) (value string, err error) {
-    fmt.Println(key)
+func RedisGet(ctx *gin.Context, redisConn redis.Conn, key string) (value string, err error) {
+    if parent := opentracing.SpanFromContext(ctx); parent != nil {
+        pctx := parent.Context()
+        if tracer := opentracing.GlobalTracer(); tracer != nil {
+            redisSpan := tracer.StartSpan("RedisSpanGet", opentracing.ChildOf(pctx))
+            defer redisSpan.Finish()
+            redisSpan.SetTag("redis_conn", redisConn)
+            redisSpan.SetTag("key", key)
+        }
+    }
     if value, err = redis.String(redisConn.Do("Get", key)); err != nil {
         value = "0"
     }

@@ -55,11 +55,11 @@ func (as *AuthService) TokenGenerate(req *TokenRequest) *TokenResponse {
         UserId: req.UserId,
     }
     redisConn := common.RedisPool.Get()
-    defer redisConn.Close()
-    if _, err := common.RedisSet(redisConn, res.Key, &redisAuthModel); err != nil {
+    if _, err := common.RedisSet(as.Ctx, redisConn, res.Key, &redisAuthModel); err != nil {
         as.Ctx.Keys["code"] = common.REDIS_SET_ERROR
         panic(err)
     }
+    redisConn.Close()
     return &res
 }
 
@@ -93,7 +93,7 @@ func (as *AuthService) RefreshToken(req *TokenRequest) *TokenResponse {
     }
     redisConn := common.RedisPool.Get()
     defer redisConn.Close()
-    if _, err := common.RedisSet(redisConn, res.Key, &redisAuthModel); err != nil {
+    if _, err := common.RedisSet(as.Ctx, redisConn, res.Key, &redisAuthModel); err != nil {
         as.Ctx.Keys["code"] = common.REDIS_SET_ERROR
         panic(err)
     }

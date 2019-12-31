@@ -51,7 +51,7 @@ func InitDB(DbUri string) {
     }
     DB.SingularTable(true)
     DB.DB().SetMaxIdleConns(10)
-    DB.DB().SetMaxOpenConns(100)
+    DB.DB().SetMaxOpenConns(500)
     DB.DB().SetConnMaxLifetime(2 * time.Second)
 }
 

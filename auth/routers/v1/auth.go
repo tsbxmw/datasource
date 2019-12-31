@@ -7,7 +7,7 @@ import (
 )
 
 func Token(c *gin.Context) {
-	common.LogrusLogger.Info("Token Get")
+    common.LogrusLogger.Info("Token Get")
     common.InitKey(c)
     tokenReq := service.TokenRequest{}
     if err := c.ShouldBind(&tokenReq); err != nil {
@@ -20,7 +20,7 @@ func Token(c *gin.Context) {
     c.JSON(200, gin.H{
         "code":   200,
         "data":   &res,
-        "messag": "",
+        "message": "",
     })
 }
 
@@ -37,7 +37,7 @@ func RefreshToken(c *gin.Context) {
     c.JSON(200, gin.H{
         "code":   200,
         "data":   &res,
-        "messag": "",
+        "message": "",
     })
 
 }

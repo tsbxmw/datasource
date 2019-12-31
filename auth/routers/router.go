@@ -31,6 +31,8 @@ func InitRouter(r *gin.Engine) {
             }
         */
         GroupV1.POST("/auth/token", v1.Token)
+
+
         /**
          * @api {get} /v1/health 健康监测
          * @apiName Health_Check

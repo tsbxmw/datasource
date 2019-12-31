@@ -36,7 +36,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
         redisFlag := false
 
-        if secretTemp, err := common.RedisGet(redisConn, key); err != nil {
+        if secretTemp, err := common.RedisGet(c, redisConn, key); err != nil {
             common.LogrusLogger.Error(err)
             if err := common.DB.Table("auth").Where("app_key=? and app_secret=?", key, secret).First(&auth).Error; err != nil {
                 c.Keys["code"] = common.REDIS_GET_ERROR

@@ -58,6 +58,11 @@ func ExceptionMiddleware() (gin.HandlerFunc) {
                     common.LogrusLogger.Error(err)
                 }
 
+                extension := make(map[string]interface{}, 0)
+                extension["code"] = c.Keys["code"]
+                extension["message"] = err.(error).Error()
+                TracerHandler("exception", "server", c, false, extension)
+                
                 c.AbortWithStatusJSON(common.HTTP_STATUS_OK, gin.H{
                     "message": err.(error).Error(),
                     "data":    []string{},

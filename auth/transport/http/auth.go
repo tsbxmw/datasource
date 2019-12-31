@@ -30,6 +30,8 @@ func (httpServer HttpServer) Serve() {
 	middleware.LoggerInit(engin, "./log/auth.log")
 	// init Apidoc
 	//middleware.ApidocMiddlewareInit(engin)
+	middleware.TracerInit(engin, httpServer.JaegerAddr, httpServer.SvcName)
+	defer (*middleware.TracerCloser).Close()
 	// init redis
 	common.InitRedisPool("tcp", httpServer.RedisHost+":"+string(httpServer.RedisPort), httpServer.RedisPassword, httpServer.RedisDB)
 	// init exception
@@ -52,6 +54,7 @@ func (httpServer HttpServer) Serve() {
 	consulRegister.RegisterHTTP()
 
 	common.InitDB(httpServer.DbUri)
+
 	common.LogrusLogger.Info("serve on " + strconv.Itoa(httpServer.Port))
 	if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
 		panic(err)
