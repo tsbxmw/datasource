@@ -9,7 +9,9 @@ import (
 )
 
 func main() {
-    app, err := common.App("datasource", "usage for datasource", http.HttpServer{})
+	httpServer := http.HttpServer{}
+	config := common.ServiceConfigImpl{}
+    app, err := common.App("datasource", "usage for datasource", httpServer, config)
     if err != nil {
         logrus.Error(err)
         panic(err)

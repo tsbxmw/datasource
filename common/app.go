@@ -3,13 +3,13 @@ package common
 import (
 	"context"
 	"github.com/urfave/cli"
-	"log"
 	"os"
 	"os/signal"
 	"time"
 )
 
-func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *cli.App, err error) {
+func App(serviceName string, serviceUsage string, httpServer HttpServer, serviceConfig ServiceConfig) (app *cli.App,
+	err error) {
 	var config string
 	app = &cli.App{
 		Name:  serviceName,
@@ -34,14 +34,12 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 				Before:       nil,
 				After:        nil,
 				Action: func(c *cli.Context) error {
-					log.Println("Loading config from", config)
-					conf, err := ConfigFromFileName(config)
-					log.Println("Start Server :", conf.ServiceName)
-					log.Println("Port :", conf.Port)
-					if err != nil {
-						panic(err)
-					}
-					httpReal := httpServer.Init(&conf)
+					//fmt.Println("Loading config from", config)
+					//err, configReal := serviceConfig.ConfigFromFileName(config)
+					//if err != nil {
+					//	panic(err)
+					//}
+					httpReal := httpServer.Init(serviceConfig, config)
 					go httpReal.Serve()
 
 					// Wait for interrupt signal to gracefully shutdown the server with
@@ -49,12 +47,10 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 					quit := make(chan os.Signal)
 					signal.Notify(quit, os.Interrupt, os.Kill)
 					<-quit
-					log.Println("Shutdown Server <<<", conf.ServiceName, ">>>")
 					httpReal.Shutdown()
 					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 					defer cancel()
 					ctx.Done()
-					log.Println("Server <<<", conf.ServiceName, ">>> Exit  OK")
 					return nil
 				},
 				OnUsageError:       nil,
@@ -78,12 +74,11 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 				Before:       nil,
 				After:        nil,
 				Action: func(c *cli.Context) error {
-					conf, err := ConfigFromFileName(config)
-					if err != nil {
-						panic(err)
-					}
-
-					httpReal := httpServer.Init(&conf)
+					//err, configReal := serviceConfig.ConfigFromFileName(config)
+					//if err != nil {
+					//	panic(err)
+					//}
+					httpReal := httpServer.Init(serviceConfig, config)
 					go httpReal.ServeWorker()
 
 					// Wait for interrupt signal to gracefully shutdown the server with
@@ -91,13 +86,12 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer) (app *c
 					quit := make(chan os.Signal)
 					signal.Notify(quit, os.Interrupt)
 					<-quit
-					log.Println("Shutdown Server : <<<", conf.ServiceName, ">>>")
+					//log.Println("Shutdown Server : <<<", conf.ServiceName, ">>>")
 
 					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 					defer cancel()
 					ctx.Done()
-					log.Println("Server <<<", conf.ServiceName, ">>> Worker Exit  OK")
-					return nil
+					//log.Println("Server <<<", conf.ServiceName, ">>> Worker Exit  OK")
 					return nil
 				},
 				OnUsageError:       nil,

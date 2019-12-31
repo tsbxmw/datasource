@@ -3,6 +3,7 @@ package http
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"github.com/tsbxmw/datasource/auth/routers"
 	"github.com/tsbxmw/datasource/common"
 	"github.com/tsbxmw/datasource/common/consul"
@@ -15,8 +16,33 @@ import (
 type (
 	HttpServer struct {
 		common.HttpServerImpl
+		AppId     string
+		AppSecret string
+		GrantType string
+	}
+
+	ConfigServer struct {
+		common.ServiceConfigImpl
+		AppId     string
+		AppSecret string
+		GrantType string
 	}
 )
+
+func (configServer ConfigServer) ConfigFromFileName(config string) common.ServiceConfig {
+	fmt.Println("Config from file : ", config)
+	viper.SetConfigFile(config)
+	if err := viper.ReadInConfig(); err != nil {
+		return configServer
+	}
+	configServer = ConfigServer{
+		ServiceConfigImpl: common.ServiceConfigImpl{}.ConfigFromFileName(config).(common.ServiceConfigImpl),
+		AppId:     viper.GetString("app_id"),
+		AppSecret: viper.GetString("app_secret"),
+		GrantType: viper.GetString("grant_type"),
+	}
+	return configServer
+}
 
 func (httpServer HttpServer) ServeWorker() {
 
@@ -82,17 +108,21 @@ func (httpServer HttpServer) Shutdown() {
 	}
 }
 
-func (httpServer HttpServer) Init(config *common.ServiceConfig) (common.HttpServer) {
-	httpServer.SvcName = config.ServiceName
-	httpServer.Address = config.HttpAddr
-	httpServer.Port = config.Port
-	httpServer.DbUri = config.DbUri
-	httpServer.ConsulAddr = config.ConsulAddr
-	httpServer.JaegerAddr = config.JaegerAddr
-	httpServer.ConsulPort = config.ConsulPort
-	httpServer.RedisDB = config.RedisDB
-	httpServer.RedisHost = config.RedisHost
-	httpServer.RedisPassword = config.RedisPassword
-	httpServer.RedisPort = config.RedisPort
+func (httpServer HttpServer) Init(conf common.ServiceConfig, configPath string) common.HttpServer {
+	configReal := conf.ConfigFromFileName(configPath).(ConfigServer)
+	httpServer.SvcName = configReal.ServiceName
+	httpServer.Address = configReal.HttpAddr
+	httpServer.Port = configReal.Port
+	httpServer.DbUri = configReal.DbUri
+	httpServer.ConsulAddr = configReal.ConsulAddr
+	httpServer.JaegerAddr = configReal.JaegerAddr
+	httpServer.ConsulPort = configReal.ConsulPort
+	httpServer.RedisDB = configReal.RedisDB
+	httpServer.RedisHost = configReal.RedisHost
+	httpServer.RedisPassword = configReal.RedisPassword
+	httpServer.RedisPort = configReal.RedisPort
+	httpServer.AppId = configReal.AppId
+	httpServer.AppSecret = configReal.AppSecret
+	httpServer.GrantType = configReal.GrantType
 	return httpServer
 }

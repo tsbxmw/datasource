@@ -3,7 +3,7 @@
   "consul_addr": "http://122.51.145.198",
   "consul_port": 8500,
   "db_uri": "root:mengwei@(122.51.145.198:3306)/datasource?parseTime=true&loc=Local",
-  "jaeger_addr": "tcloud-api.tsbx.com:5775",
+  "jaeger_addr": "tcloud.tsbx.com:5775",
   "log_file": "log/auth.log",
   "port": 9050,
   "grpc_port": 9051,

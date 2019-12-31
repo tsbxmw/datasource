@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	app, err := common.App("auth_v1", "auth service for datasource", http.HttpServer{})
+	app, err := common.App("auth_v1", "auth service for datasource", http.HttpServer{}, http.ConfigServer{})
 	if err != nil {
 		logrus.Error(err)
 		panic(err)

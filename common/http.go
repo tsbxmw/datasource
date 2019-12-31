@@ -9,7 +9,7 @@ type (
         Serve()
         ServeWorker()
         Shutdown()
-        Init(config *ServiceConfig) HttpServer
+        Init(config ServiceConfig, configPath string) HttpServer
     }
 
     HttpServerImpl struct {

@@ -100,18 +100,19 @@ func (httpServer HttpServer) ServeWorker() {
 	}
 }
 
-func (httpServer HttpServer) Init(config *common.ServiceConfig) common.HttpServer {
-	httpServer.SvcName = config.ServiceName
-	httpServer.Address = config.HttpAddr
-	httpServer.Port = config.Port
-	httpServer.DbUri = config.DbUri
-	httpServer.ConsulAddr = config.ConsulAddr
-	httpServer.JaegerAddr = config.JaegerAddr
-	httpServer.ConsulPort = config.ConsulPort
-	httpServer.RedisDB = config.RedisDB
-	httpServer.RedisHost = config.RedisHost
-	httpServer.RedisPassword = config.RedisPassword
-	httpServer.RedisPort = config.RedisPort
-	httpServer.MqUri = config.MqUri
+func (httpServer HttpServer) Init(config common.ServiceConfig, configPath string) common.HttpServer {
+	configReal := config.ConfigFromFileName(configPath).(common.ServiceConfigImpl)
+	httpServer.SvcName = configReal.ServiceName
+	httpServer.Address = configReal.HttpAddr
+	httpServer.Port = configReal.Port
+	httpServer.DbUri = configReal.DbUri
+	httpServer.ConsulAddr = configReal.ConsulAddr
+	httpServer.JaegerAddr = configReal.JaegerAddr
+	httpServer.ConsulPort = configReal.ConsulPort
+	httpServer.RedisDB = configReal.RedisDB
+	httpServer.RedisHost = configReal.RedisHost
+	httpServer.RedisPassword = configReal.RedisPassword
+	httpServer.RedisPort = configReal.RedisPort
+	httpServer.MqUri = configReal.MqUri
 	return httpServer
 }
