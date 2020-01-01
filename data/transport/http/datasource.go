@@ -10,6 +10,7 @@ import (
 	"github.com/tsbxmw/datasource/common/mq"
 	"github.com/tsbxmw/datasource/data/routers"
 	"github.com/tsbxmw/datasource/data/workers"
+	"log"
 	"strconv"
 	"time"
 )
@@ -21,7 +22,6 @@ type (
 )
 
 func (httpServer HttpServer) Serve() {
-	fmt.Println("test on httpserver", httpServer.SvcName)
 	gin.SetMode(gin.ReleaseMode)
 	engin := gin.New()
 	common.InitDB(httpServer.DbUri)
@@ -51,7 +51,7 @@ func (httpServer HttpServer) Serve() {
 		Interval:                       time.Second * 60,
 	}
 	consulRegister.RegisterHTTP()
-
+	log.Println("Listen on Port : ", httpServer.Port)
 	if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
 		panic(err)
 	}

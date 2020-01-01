@@ -3,6 +3,7 @@ package common
 import (
 	"context"
 	"github.com/urfave/cli"
+	"log"
 	"os"
 	"os/signal"
 	"time"
@@ -34,14 +35,9 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer, service
 				Before:       nil,
 				After:        nil,
 				Action: func(c *cli.Context) error {
-					//fmt.Println("Loading config from", config)
-					//err, configReal := serviceConfig.ConfigFromFileName(config)
-					//if err != nil {
-					//	panic(err)
-					//}
+					log.Println("Start Server")
 					httpReal := httpServer.Init(serviceConfig, config)
 					go httpReal.Serve()
-
 					// Wait for interrupt signal to gracefully shutdown the server with
 					// a timeout of 5 seconds.
 					quit := make(chan os.Signal)
@@ -51,6 +47,7 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer, service
 					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 					defer cancel()
 					ctx.Done()
+					log.Println("Server Shutdown OK")
 					return nil
 				},
 				OnUsageError:       nil,
@@ -74,10 +71,7 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer, service
 				Before:       nil,
 				After:        nil,
 				Action: func(c *cli.Context) error {
-					//err, configReal := serviceConfig.ConfigFromFileName(config)
-					//if err != nil {
-					//	panic(err)
-					//}
+					log.Println("Start Server")
 					httpReal := httpServer.Init(serviceConfig, config)
 					go httpReal.ServeWorker()
 
@@ -86,12 +80,11 @@ func App(serviceName string, serviceUsage string, httpServer HttpServer, service
 					quit := make(chan os.Signal)
 					signal.Notify(quit, os.Interrupt)
 					<-quit
-					//log.Println("Shutdown Server : <<<", conf.ServiceName, ">>>")
-
+					log.Println("Shutdown Server")
 					ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 					defer cancel()
 					ctx.Done()
-					//log.Println("Server <<<", conf.ServiceName, ">>> Worker Exit  OK")
+					log.Println("Server Worker Exit OK")
 					return nil
 				},
 				OnUsageError:       nil,

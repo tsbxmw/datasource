@@ -1,10 +1,9 @@
 package main
 
 import (
+    "github.com/sirupsen/logrus"
     "github.com/tsbxmw/datasource/common"
     "github.com/tsbxmw/datasource/data/transport/http"
-    "fmt"
-    "github.com/sirupsen/logrus"
     "os"
 )
 
@@ -16,7 +15,6 @@ func main() {
         logrus.Error(err)
         panic(err)
     }
-    fmt.Println("start main")
     if err := app.Run(os.Args); err != nil {
         logrus.Error(err)
         panic(err)

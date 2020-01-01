@@ -3,12 +3,12 @@ package http
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"github.com/tsbxmw/datasource/auth/routers"
 	"github.com/tsbxmw/datasource/common"
 	"github.com/tsbxmw/datasource/common/consul"
 	"github.com/tsbxmw/datasource/common/handler"
 	"github.com/tsbxmw/datasource/common/middleware"
+	"log"
 	"strconv"
 	"time"
 )
@@ -16,40 +16,16 @@ import (
 type (
 	HttpServer struct {
 		common.HttpServerImpl
-		AppId     string
-		AppSecret string
-		GrantType string
 	}
 
-	ConfigServer struct {
-		common.ServiceConfigImpl
-		AppId     string
-		AppSecret string
-		GrantType string
-	}
 )
-
-func (configServer ConfigServer) ConfigFromFileName(config string) common.ServiceConfig {
-	fmt.Println("Config from file : ", config)
-	viper.SetConfigFile(config)
-	if err := viper.ReadInConfig(); err != nil {
-		return configServer
-	}
-	configServer = ConfigServer{
-		ServiceConfigImpl: common.ServiceConfigImpl{}.ConfigFromFileName(config).(common.ServiceConfigImpl),
-		AppId:     viper.GetString("app_id"),
-		AppSecret: viper.GetString("app_secret"),
-		GrantType: viper.GetString("grant_type"),
-	}
-	return configServer
-}
 
 func (httpServer HttpServer) ServeWorker() {
 
 }
 
 func (httpServer HttpServer) Serve() {
-	fmt.Println("test on httpserver", httpServer.SvcName)
+	fmt.Println("Start Server : ", httpServer.SvcName)
 	gin.SetMode(gin.ReleaseMode)
 	engin := gin.New()
 	// init logger
@@ -81,7 +57,7 @@ func (httpServer HttpServer) Serve() {
 
 	common.InitDB(httpServer.DbUri)
 
-	common.LogrusLogger.Info("serve on " + strconv.Itoa(httpServer.Port))
+	log.Println("Listen on Port : ", httpServer.Port)
 	if err := engin.Run("0.0.0.0:" + strconv.Itoa(httpServer.Port)); err != nil {
 		panic(err)
 	}
@@ -109,7 +85,7 @@ func (httpServer HttpServer) Shutdown() {
 }
 
 func (httpServer HttpServer) Init(conf common.ServiceConfig, configPath string) common.HttpServer {
-	configReal := conf.ConfigFromFileName(configPath).(ConfigServer)
+	configReal := conf.ConfigFromFileName(configPath).(common.ServiceConfigImpl)
 	httpServer.SvcName = configReal.ServiceName
 	httpServer.Address = configReal.HttpAddr
 	httpServer.Port = configReal.Port
@@ -121,8 +97,5 @@ func (httpServer HttpServer) Init(conf common.ServiceConfig, configPath string) 
 	httpServer.RedisHost = configReal.RedisHost
 	httpServer.RedisPassword = configReal.RedisPassword
 	httpServer.RedisPort = configReal.RedisPort
-	httpServer.AppId = configReal.AppId
-	httpServer.AppSecret = configReal.AppSecret
-	httpServer.GrantType = configReal.GrantType
 	return httpServer
 }
