@@ -49,9 +49,9 @@ func TracerMiddleware() gin.HandlerFunc {
 }
 
 func TracerHandler(component string, kind string, c *gin.Context, rootSpan bool, extension map[string]interface{}) {
-	if TracerCommon == nil {
-		return
-	}
+    if TracerCommon == nil {
+        return
+    }
     var parentSpan opentracing.Span
     if parentSpanContext, ok := c.Get("ParentSpanContext"); ok {
         if tracer := opentracing.GlobalTracer(); tracer != nil {
@@ -76,7 +76,7 @@ func TracerHandler(component string, kind string, c *gin.Context, rootSpan bool,
         parentSpan.SetTag("http.url", c.Request.Host+":"+c.Request.RequestURI)
         parentSpan.SetTag("http.method", c.Request.Method)
     }
-    if len(extension) > 0{
+    if len(extension) > 0 {
         for key, value := range extension {
             parentSpan.SetTag(key, value)
         }

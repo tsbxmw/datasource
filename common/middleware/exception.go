@@ -60,7 +60,7 @@ func ExceptionMiddleware() (gin.HandlerFunc) {
 
                 extension := make(map[string]interface{}, 0)
                 extension["code"] = c.Keys["code"]
-                extension["message"] = err.(error).Error()
+                extension["message"] = err
                 TracerHandler("exception", "server", c, false, extension)
                 
                 c.AbortWithStatusJSON(common.HTTP_STATUS_OK, gin.H{
