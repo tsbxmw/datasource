@@ -21,8 +21,10 @@ type (
 	}
 )
 
-func (httpServer HttpServer) Serve() {
-	gin.SetMode(gin.ReleaseMode)
+func (httpServer HttpServer) Serve(mode string) {
+	if mode == "" || mode == "release"{
+		gin.SetMode(gin.ReleaseMode)
+	}
 	engin := gin.New()
 	common.InitDB(httpServer.DbUri)
 	// init logger

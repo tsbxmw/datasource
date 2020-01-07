@@ -24,9 +24,11 @@ func (httpServer HttpServer) ServeWorker() {
 
 }
 
-func (httpServer HttpServer) Serve() {
+func (httpServer HttpServer) Serve(mode string) {
 	fmt.Println("Start Server : ", httpServer.SvcName)
-	gin.SetMode(gin.ReleaseMode)
+	if mode == "" || mode == "release"{
+		gin.SetMode(gin.ReleaseMode)
+	}
 	engin := gin.New()
 	// init logger
 	middleware.LoggerInit(engin, "./log/auth.log")

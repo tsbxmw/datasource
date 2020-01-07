@@ -6,7 +6,7 @@ import (
 
 type (
     HttpServer interface {
-        Serve()
+        Serve(mode string)
         ServeWorker()
         Shutdown()
         Init(config ServiceConfig, configPath string) HttpServer
