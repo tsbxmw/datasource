@@ -95,33 +95,6 @@ func RedisSetCommon(redisConn redis.Conn, key string, value interface{}) (code i
 	return
 }
 
-func RedisSet(ctx *gin.Context, redisConn redis.Conn, key string, value interface{}) (code int, err error) {
-	parentCtx, ok := ctx.Get("ParentSpanContext")
-	var redisSpan opentracing.Span
-	if ok {
-		if tracer := opentracing.GlobalTracer(); tracer != nil {
-			redisSpan = tracer.StartSpan("RedisSpanSet", opentracing.ChildOf(parentCtx.(opentracing.SpanContext)))
-			defer redisSpan.Finish()
-
-			redisSpan.SetTag("redis_conn", redisConn)
-			redisSpan.SetTag("key", key)
-			redisSpan.SetTag("value", value)
-		}
-	}
-	var valueJson []byte
-
-	if valueJson, err = json.Marshal(value); err != nil {
-		redisSpan.SetTag("error", true)
-		return REDIS_SET_ERROR, err
-	}
-
-	if _, err := redisConn.Do("Set", key, valueJson); err != nil {
-		redisSpan.SetTag("error", true)
-		return REDIS_SET_ERROR, err
-	}
-	return
-}
-
 func RedisGetCommon(redisConn redis.Conn, key string) (value string, err error) {
 	if value, err = redis.String(redisConn.Do("Get", key)); err != nil {
 		value = "0"
