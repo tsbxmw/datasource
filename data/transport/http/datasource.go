@@ -22,7 +22,7 @@ type (
 )
 
 func (httpServer HttpServer) Serve(mode string) {
-	if mode == "" || mode == "release"{
+	if mode == "" || mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	engin := gin.New()
@@ -74,13 +74,13 @@ func (httpServer HttpServer) Shutdown() {
 		Interval:                       time.Second * 60,
 	}
 	consulClient := consulRegister.NewConsulClient()
-	if err:=consulClient.Agent().ServiceDeregister(consulName); err != nil {
+	if err := consulClient.Agent().ServiceDeregister(consulName); err != nil {
 		common.LogrusLogger.Error(err)
 		panic(err)
 	}
 }
 
-func (httpServer HttpServer) ServeWorker() {
+func (httpServer HttpServer) ServeWorker(mode string) {
 	fmt.Println("test on httpserver", httpServer.SvcName)
 	engin := gin.New()
 	common.InitDB(httpServer.DbUri)

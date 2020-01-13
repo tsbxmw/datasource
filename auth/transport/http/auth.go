@@ -17,16 +17,15 @@ type (
 	HttpServer struct {
 		common.HttpServerImpl
 	}
-
 )
 
-func (httpServer HttpServer) ServeWorker() {
+func (httpServer HttpServer) ServeWorker(mode string) {
 
 }
 
 func (httpServer HttpServer) Serve(mode string) {
 	fmt.Println("Start Server : ", httpServer.SvcName)
-	if mode == "" || mode == "release"{
+	if mode == "" || mode == "release" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	engin := gin.New()
