@@ -2,11 +2,10 @@ package common
 
 import (
 	"fmt"
-	"github.com/rifflock/lfshook"
-	"github.com/sirupsen/logrus"
-	"os"
 	"runtime"
 	"strings"
+
+	"github.com/sirupsen/logrus"
 )
 
 var LogrusLogger *logrus.Logger
@@ -21,9 +20,6 @@ func InitLogger() *logrus.Logger {
 	}
 	LogrusLogger = logrus.New()
 	LogrusLogger.AddHook(hook)
-
-	stdOut := lfshook.NewHook(os.Stdout, &logrus.TextFormatter{})
-	LogrusLogger.AddHook(stdOut)
 
 	return LogrusLogger
 }
